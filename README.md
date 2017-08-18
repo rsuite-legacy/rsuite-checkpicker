@@ -1,4 +1,4 @@
-# rsuite-checkpicker  [![Travis][build-badge]][build] [![npm][npm-badge]][npm]
+# rsuite-checkpicker
 
 
 `rsuite-checkpicker` 是一个选择器组件，可以替代原生 `select` 控件。同时还具有一些特性：
@@ -7,6 +7,12 @@
 - 支持分组
 
 > `rsuite-checkpicker` 只支持多选，如果只需要单选，可以使用 [`rsuite-selectpicker`](https://rsuitejs.com/rsuite-selectpicker)
+
+版本与状态
+
+- [![npm][npm-beta-badge]][npm-beta] `Beta`
+- [![Travis][build-badge]][build] [![Coverage Status][coverage-badge]][coverage]
+
 
 ## 快速开始
 
@@ -45,10 +51,17 @@ const data = [{
 ```
 
 
-[build-badge]: https://travis-ci.org/rsuite/rsuite-checkpicker.svg?branch=master
+
+[npm-badge]: https://img.shields.io/npm/v/rsuite-checkpicker.svg
+[npm]: https://www.npmjs.com/package/rsuite-checkpicker
+
+
+[npm-beta-badge]: https://cnpmjs.org/badge/v/rsuite-checkpicker.svg?&tag=beta&subject=npm
+[npm-beta]: https://www.npmjs.com/package/rsuite-checkpicker
+
+
+[build-badge]: https://travis-ci.org/rsuite/rsuite-checkpicker.svg
 [build]: https://travis-ci.org/rsuite/rsuite-checkpicker
 
-
-[npm-badge]: https://badge.fury.io/js/rsuite-checkpicker.svg
-[npm]: http://badge.fury.io/js/rsuite-checkpicker
-
+[coverage-badge]: https://coveralls.io/repos/github/rsuite/rsuite-checkpicker/badge.svg
+[coverage]: https://coveralls.io/github/rsuite/rsuite-checkpicker
