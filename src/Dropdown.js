@@ -10,7 +10,7 @@ import filterNodesOfTree from './utils/filterNodesOfTree';
 import decorate from './utils/decorate';
 import getDataGroupBy from './utils/getDataGroupBy';
 import defaultLocale from './locale';
-import { IntlProvider } from './intl';
+import { IntlProvider, FormattedMessage } from './intl';
 
 const propTypes = {
   ..._.omit(DropdownMenu.propTypes, [
@@ -30,6 +30,7 @@ const propTypes = {
   value: PropTypes.array,
   defaultValue: PropTypes.array,
   renderPlaceholder: PropTypes.func,
+  placeholder: PropTypes.string,
   onChange: PropTypes.func,
   locale: PropTypes.object,
   autoAdjustPosition: PropTypes.bool
@@ -38,7 +39,9 @@ const propTypes = {
 const defaultProps = {
   ...DropdownMenu.defaultProps,
   locale: defaultLocale,
-  autoAdjustPosition: true
+  autoAdjustPosition: true,
+  cleanable: true,
+  placeholder: 'placeholder'
 };
 
 class Dropdown extends React.Component {
@@ -291,6 +294,16 @@ class Dropdown extends React.Component {
     });
   }
 
+  handleClean = (event) => {
+    const { disabled, onChange } = this.props;
+    if (disabled) {
+      return;
+    }
+    this.setState({ value: [] }, () => {
+      onChange && onChange([], event);
+    });
+  }
+
   autoAdjustDropdownPosition = () => {
     const { height, dropup } = this.props;
 
@@ -379,18 +392,26 @@ class Dropdown extends React.Component {
       disabled,
       inverse,
       locale,
+      cleanable,
+      placeholder,
       ...props
     } = this.props;
 
     const { value, expand, dropup } = this.state;
     const elementProps = _.omit(props, Object.keys(propTypes));
 
-    let placeholder = `${value.length} selected`;
+    let placeholderText = (value && value.length) ? `${value.length} selected` : (
+      <div className="placeholder-text">
+        <FormattedMessage id={placeholder} />
+      </div>
+    );
+
 
     if (renderPlaceholder) {
-      placeholder = renderPlaceholder(
+      placeholderText = renderPlaceholder(
         value,
-        data.filter(item => value.some(val => _.eq(item[valueKey], val)))
+        data.filter(item => value.some(val => _.eq(item[valueKey], val))),
+        placeholderText
       );
     }
 
@@ -415,8 +436,11 @@ class Dropdown extends React.Component {
         >
           <DropdownToggle
             onClick={this.toggleDropdown}
+            onClean={this.handleClean}
+            cleanable={cleanable && !disabled}
+            value={value}
           >
-            {placeholder}
+            {placeholderText}
           </DropdownToggle>
           {expand && this.renderDropdownMenu()}
 
