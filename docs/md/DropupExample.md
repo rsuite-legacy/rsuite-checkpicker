@@ -1,7 +1,7 @@
 ```html
 <CheckPicker
   data={data}
-  defaultValue={'Julius'}
+  defaultValue={['Julius']}
   dropup
 />
 

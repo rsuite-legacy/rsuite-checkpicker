@@ -14,10 +14,13 @@
       </span>
     );
   }}
-  renderPlaceholder={(placeholder, checkedItems) => {
+  renderPlaceholder={(value, checkedItems, placeholder) => {
+    if (!value.length) {
+      return placeholder;
+    }
     return (
       <span>
-        <i className="icon icon-user" /> {placeholder.join(' , ')}
+        <i className="icon icon-user" /> {value.join(' , ')}
       </span>
     );
   }}

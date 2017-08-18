@@ -1,7 +1,7 @@
 ```html
 <CheckPicker
   data={data}
-  defaultValue={'Julius'}
+  defaultValue={['Julius']}
   disabled
 />
 ```
@@ -12,7 +12,7 @@
 ```html
 <CheckPicker
   data={data}
-  defaultValue={'Julius'}
+  defaultValue={['Julius']}
   disabledItemValues={['Eugenia', 'Travon', 'Vincenza']}
 />
 ```

@@ -1,7 +1,7 @@
 ```html
 <CheckPicker
   data={data}
-  defaultValue={'Julius'}
+  defaultValue={['Julius']}
 />
 ```
 > 如果在非受控组件下设置默认值，通过 `defaultValue` 参数设置。

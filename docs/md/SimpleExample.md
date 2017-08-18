@@ -2,7 +2,8 @@
 ```html
 <CheckPicker
   data={data}
-  defaultValue={'Julius'}
+  defaultValue={['Julius']}
+  placeholder="请选择"
 />
 ```
 - 初始化一个 `CheckPicker`, 只需要设置一个 `data` 属性， 需要注意的 [data](https://github.com/rsuite/rsuite-checkpicker/blob/master/docs/data/users.js) 是一个数组;
@@ -11,7 +12,7 @@
 ```html
 <CheckPicker
   data={data}
-  defaultValue={'Julius'}
+  defaultValue={['Julius']}
   labelKey="text",
   valueKey="id"
 />
