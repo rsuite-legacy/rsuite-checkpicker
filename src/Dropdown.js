@@ -33,7 +33,9 @@ const propTypes = {
   placeholder: PropTypes.string,
   onChange: PropTypes.func,
   locale: PropTypes.object,
-  autoAdjustPosition: PropTypes.bool
+  autoAdjustPosition: PropTypes.bool,
+  searchable: PropTypes.bool,
+  cleanable: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -41,6 +43,7 @@ const defaultProps = {
   locale: defaultLocale,
   autoAdjustPosition: true,
   cleanable: true,
+  searchable: true,
   placeholder: 'placeholder'
 };
 
@@ -331,7 +334,8 @@ class Dropdown extends React.Component {
     const {
       data,
       labelKey,
-      groupBy
+      groupBy,
+      searchable
     } = this.props;
 
     const { focusItemValue, dropup } = this.state;
@@ -364,13 +368,13 @@ class Dropdown extends React.Component {
       />
     );
 
-    const searchBar = (
+    const searchBar = searchable ? (
       <SearchBar
         key="searchBar"
         onChange={this.handleSearch}
         value={this.state.searchKeyword}
       />
-    );
+    ) : null;
 
     return (
       <div
