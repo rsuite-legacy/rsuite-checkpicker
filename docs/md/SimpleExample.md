@@ -12,12 +12,11 @@
 ```html
 <CheckPicker
   data={data}
-  defaultValue={['Julius']}
-  labelKey="text",
+  labelKey="text"
   valueKey="id"
 />
 ```
 
 
-> [示例代码](https://github.com/rsuite/rsuite-checkpicker/blob/master/docs/SimpleExample.js)
+> [示例代码](https://github.com/rsuite/rsuite-checkpicker/blob/master/docs/examples/SimpleExample.js)
 

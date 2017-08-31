@@ -20,6 +20,6 @@
 > 配置 `disabledItemValues` 属性，可以让部分选项处于禁用状态.
 
 
->[示例代码](https://github.com/rsuite/rsuite-checkpicker/blob/master/docs/DisabledExample.js)
+>[示例代码](https://github.com/rsuite/rsuite-checkpicker/blob/master/docs/examples/DisabledExample.js)
 
 

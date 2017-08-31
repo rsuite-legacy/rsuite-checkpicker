@@ -11,4 +11,4 @@
 - 如果配置手动配置 `dropup` 属性为 `ture`, 则 `<CheckPicker>` 只会想上展开。
 
 
-> [示例代码](https://github.com/rsuite/rsuite-checkpicker/blob/master/docs/DropupExample.js)
+> [示例代码](https://github.com/rsuite/rsuite-checkpicker/blob/master/docs/examples/DropupExample.js)

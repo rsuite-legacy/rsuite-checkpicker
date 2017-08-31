@@ -32,4 +32,4 @@
 - `renderPlaceholder` 回调函数可以自定义被选中的选项。
 
 
->[示例代码](https://github.com/rsuite/rsuite-checkpicker/blob/master/docs/CustomExample.js)
+>[示例代码](https://github.com/rsuite/rsuite-checkpicker/blob/master/docs/examples/CustomExample.js)

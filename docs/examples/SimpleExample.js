@@ -11,6 +11,19 @@ class SimpleExample extends React.Component {
           defaultValue={['Julius']}
           placeholder="请选择"
         />
+        <br />
+        <CheckPicker
+          data={[
+            { id: 1, text: 11 },
+            { id: 2, text: 22 },
+            { id: 3, text: 33 },
+          ]}
+          disabledItemValues={[1]}
+          defaultValue={[2]}
+          labelKey="text"
+          valueKey="id"
+          placeholder="请选择"
+        />
       </div>
     );
   }
