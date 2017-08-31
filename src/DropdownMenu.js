@@ -121,7 +121,7 @@ class DropdownMenu extends React.Component {
         }
 
         const disabled = disabledItemValues.some(disabledValue => (
-          _.isEqual(disabledValue, item.value)
+          _.isEqual(disabledValue, value)
         ));
 
         return (
@@ -134,7 +134,7 @@ class DropdownMenu extends React.Component {
               activeItemValues.some(v => _.isEqual(v, value))
             }
             hover={!_.isUndefined(focusItemValue) && _.eq(focusItemValue, value)}
-            value={item.value}
+            value={value}
             ref={(ref) => {
               if (ref && !disabled) {
                 this.menuItems[`${groupId}-${onlyKey}`] = ref;

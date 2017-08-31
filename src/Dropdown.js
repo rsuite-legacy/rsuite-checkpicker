@@ -174,10 +174,11 @@ class Dropdown extends React.Component {
   }
   findNode(focus) {
     const items = this.getFocusableMenuItems();
+    const { valueKey } = this.props;
     const { focusItemValue } = this.state;
 
     for (let i = 0; i < items.length; i += 1) {
-      if (_.eq(focusItemValue, items[i].value)) {
+      if (_.eq(focusItemValue, items[i][valueKey])) {
         focus(items, i);
         return;
       }
@@ -186,18 +187,20 @@ class Dropdown extends React.Component {
     focus(items, -1);
   }
   focusNextMenuItem() {
+    const { valueKey } = this.props;
     this.findNode((items, index) => {
       const focusItem = items[index + 1];
       if (!_.isUndefined(focusItem)) {
-        this.setState({ focusItemValue: focusItem.value });
+        this.setState({ focusItemValue: focusItem[valueKey] });
       }
     });
   }
   focusPrevMenuItem() {
+    const { valueKey } = this.props;
     this.findNode((items, index) => {
       const focusItem = items[index - 1];
       if (!_.isUndefined(focusItem)) {
-        this.setState({ focusItemValue: focusItem.value });
+        this.setState({ focusItemValue: focusItem[valueKey] });
       }
     });
   }
