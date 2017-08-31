@@ -43,7 +43,7 @@ const data = [{
 
 <Picker
   data={data}
-  defaultValue={2}
+  defaultValue={[2]}
   valueKey="value"     // `data` 数组中作为值的 `key`
   labelKey="label"     // `data` 数组中作为显示文本的 `key`
   groupBy="role"       // `data` 数组中作为分组显示的 `key`  如果不设置就不分组
