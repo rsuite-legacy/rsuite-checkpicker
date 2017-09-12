@@ -121,7 +121,8 @@ class Dropdown extends React.Component {
 
   getValue() {
     const { value } = this.props;
-    return _.isUndefined(value) ? this.state.value : value;
+    const nextValue = _.isUndefined(value) ? this.state.value : value;
+    return nextValue || [];
   }
 
   bindEvent() {
@@ -129,6 +130,7 @@ class Dropdown extends React.Component {
     this.docScrollListener = on(document, 'scroll', this.autoAdjustDropdownPosition);
     this.docResizelListener = on(window, 'resize', this.autoAdjustDropdownPosition);
   }
+
   unbindEvent() {
     this.docClickListener && this.docClickListener.off();
     this.docScrollListener && this.docClickListener.off();
