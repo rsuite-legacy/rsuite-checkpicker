@@ -51,7 +51,7 @@ class Dropdown extends React.Component {
   constructor(props) {
     super(props);
     const { data, value, defaultValue, groupBy, valueKey, labelKey, dropup } = props;
-    const nextValue = value || defaultValue || [];
+    const nextValue = _.clone(value || defaultValue) || [];
     this.state = {
       dropup,
       value: nextValue,
@@ -356,6 +356,8 @@ class Dropdown extends React.Component {
     }
 
     const menuProps = _.pick(this.props, Object.keys(DropdownMenu.propTypes));
+
+
     const dropdownMenu = (
       <DropdownMenu
         {...menuProps}
@@ -404,7 +406,8 @@ class Dropdown extends React.Component {
       ...props
     } = this.props;
 
-    const { value, expand, dropup } = this.state;
+    const { expand, dropup } = this.state;
+    const value = this.getValue();
     const elementProps = _.omit(props, Object.keys(propTypes));
 
     let placeholderText = (value && value.length) ? `${value.length} selected` : (
