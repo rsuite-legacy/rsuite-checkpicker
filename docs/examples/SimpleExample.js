@@ -8,7 +8,6 @@ class SimpleExample extends React.Component {
       <div className="example-item">
         <CheckPicker
           data={data}
-          defaultValue={['Julius']}
           placeholder="请选择"
         />
         <br />
