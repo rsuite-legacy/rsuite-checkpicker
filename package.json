@@ -1,6 +1,6 @@
 {
   "name": "rsuite-checkpicker",
-  "version": "1.0.0-beta.3",
+  "version": "1.0.0-beta.4",
   "description": "A react component for replacing default select and dropdown.",
   "scripts": {
     "dev": "NODE_ENV=development webpack-dev-server  --inline --progress --colors --port 3100 --host 0.0.0.0 ",
