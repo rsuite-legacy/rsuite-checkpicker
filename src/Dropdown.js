@@ -122,7 +122,7 @@ class Dropdown extends React.Component {
   getValue() {
     const { value } = this.props;
     const nextValue = _.isUndefined(value) ? this.state.value : value;
-    return nextValue || [];
+    return _.clone(nextValue) || [];
   }
 
   bindEvent() {
@@ -209,7 +209,8 @@ class Dropdown extends React.Component {
 
   selectFocusMenuItem(event) {
     const { onChange } = this.props;
-    const { focusItemValue, value } = this.state;
+    const value = this.getValue();
+    const { focusItemValue } = this.state;
 
     if (!value.some(v => _.isEqual(v, focusItemValue))) {
       value.push(focusItemValue);
@@ -257,7 +258,7 @@ class Dropdown extends React.Component {
 
   handleSelect = (val, checked, item, event) => {
     const { onChange, onSelect } = this.props;
-    const { value } = this.state;
+    const value = this.getValue();
 
     if (checked) {
       value.push(val);
