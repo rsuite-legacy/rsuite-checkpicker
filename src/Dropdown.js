@@ -36,6 +36,7 @@ const propTypes = {
   autoAdjustPosition: PropTypes.bool,
   searchable: PropTypes.bool,
   cleanable: PropTypes.bool,
+  renderExtraFooter: PropTypes.func
 };
 
 const defaultProps = {
@@ -303,6 +304,14 @@ class Dropdown extends React.Component {
     });
   }
 
+  close() {
+    this.setState({ expand: false });
+  }
+
+  open() {
+    this.setState({ expand: true });
+  }
+
   handleClean = (event) => {
     const { disabled, onChange } = this.props;
     if (disabled) {
@@ -341,7 +350,8 @@ class Dropdown extends React.Component {
       data,
       labelKey,
       groupBy,
-      searchable
+      searchable,
+      renderExtraFooter
     } = this.props;
 
     const { focusItemValue, dropup } = this.state;
@@ -389,7 +399,7 @@ class Dropdown extends React.Component {
         className={classes}
       >
         {dropup ? [dropdownMenu, searchBar] : [searchBar, dropdownMenu]}
-
+        {renderExtraFooter && renderExtraFooter()}
       </div>
     );
   }
@@ -456,7 +466,6 @@ class Dropdown extends React.Component {
             {placeholderText}
           </DropdownToggle>
           {expand && this.renderDropdownMenu()}
-
         </div>
       </IntlProvider>
     );
