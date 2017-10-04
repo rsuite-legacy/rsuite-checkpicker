@@ -13,6 +13,7 @@ import DropupExample from './examples/DropupExample';
 import CustomExample from './examples/CustomExample';
 import ControlledExample from './examples/ControlledExample';
 import DisabledExample from './examples/DisabledExample';
+import ExtraFooterExample from './examples/ExtraFooterExample';
 
 const App = React.createClass({
   render() {
@@ -50,6 +51,7 @@ const App = React.createClass({
                   <Nav.Item href="#custom">&nbsp;&nbsp;- 自定义选项</Nav.Item>
                   <Nav.Item href="#controlled">&nbsp;&nbsp;- 非受控与受控</Nav.Item>
                   <Nav.Item href="#disabled">&nbsp;&nbsp;- 禁用</Nav.Item>
+                  <Nav.Item href="#extrafooter">&nbsp;&nbsp;- 额外的页脚</Nav.Item>
                   <Nav.Item href="#api">API</Nav.Item>
                 </Nav>
               </Affix>
@@ -123,6 +125,17 @@ const App = React.createClass({
                   <DisabledExample />
                   <Markdown>
                     {require('./md/DisabledExample.md')}
+                  </Markdown>
+                </Col>
+              </Row>
+
+              <hr id="extrafooter" className="target-fix" />
+              <h3>额外的页脚</h3>
+              <Row>
+                <Col md={12}>
+                  <ExtraFooterExample />
+                  <Markdown>
+                    {require('./md/ExtraFooterExample.md')}
                   </Markdown>
                 </Col>
               </Row>
