@@ -125,6 +125,13 @@ class Dropdown extends React.Component {
     return _.clone(nextValue) || [];
   }
 
+  get isMounted() {
+    return this.mounted;
+  }
+  set isMounted(isMounted) {
+    this.mounted = isMounted;
+  }
+
   bindEvent() {
     this.docClickListener = on(document, 'click', this.handleDocumentClick);
     this.docScrollListener = on(document, 'scroll', this.autoAdjustDropdownPosition);
@@ -167,13 +174,6 @@ class Dropdown extends React.Component {
     return false;
   }
 
-
-  get isMounted() {
-    return this.mounted;
-  }
-  set isMounted(isMounted) {
-    this.mounted = isMounted;
-  }
   findNode(focus) {
     const items = this.getFocusableMenuItems();
     const { valueKey } = this.props;
