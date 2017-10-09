@@ -15,7 +15,7 @@ import ControlledExample from './examples/ControlledExample';
 import DisabledExample from './examples/DisabledExample';
 import ExtraFooterExample from './examples/ExtraFooterExample';
 
-const App = React.createClass({
+class App extends React.Component {
   render() {
 
     return (
@@ -143,7 +143,7 @@ const App = React.createClass({
               <hr />
               <a href="https://github.com/rsuite/rsuite-checkpicker/tree/master/examples" target="_blank">
                 更多示例
-              </a>
+                  </a>
 
               <hr id="api" className="target-fix" />
               <h2><code>{'# API'}</code></h2>
@@ -157,7 +157,7 @@ const App = React.createClass({
       </div>
     );
   }
-});
+}
 
 ReactDOM.render(<App />,
   document.getElementById('app')

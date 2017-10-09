@@ -6,13 +6,15 @@
 - 支持自定选项
 - 支持分组
 
-> `rsuite-checkpicker` 只支持多选，如果只需要单选，可以使用 [`rsuite-selectpicker`](https://rsuitejs.com/rsuite-selectpicker)
+> `rsuite-checkpicker` 只支持多选，如果只需要单选，可以使用 [`rsuite-checkpicker`](https://rsuitejs.com/rsuite-checkpicker)
 
 版本与状态
 
-- [![npm][npm-beta-badge]][npm-beta] `Beta`
-- [![Travis][build-badge]][build] [![Coverage Status][coverage-badge]][coverage]
+[![npm][npm-badge]][npm]
 
+[![npm][npm-beta-badge]][npm-beta]
+
+[![Travis][build-badge]][build] [![Coverage Status][coverage-badge]][coverage]
 
 ## 快速开始
 
@@ -56,12 +58,12 @@ const data = [{
 [npm]: https://www.npmjs.com/package/rsuite-checkpicker
 
 
-[npm-beta-badge]: https://cnpmjs.org/badge/v/rsuite-checkpicker.svg?&tag=beta&subject=npm
+[npm-beta-badge]: https://img.shields.io/npm/v/rsuite-checkpicker/beta.svg
 [npm-beta]: https://www.npmjs.com/package/rsuite-checkpicker
 
 
 [build-badge]: https://travis-ci.org/rsuite/rsuite-checkpicker.svg
 [build]: https://travis-ci.org/rsuite/rsuite-checkpicker
 
-[coverage-badge]: https://coveralls.io/repos/github/rsuite/rsuite-checkpicker/badge.svg
-[coverage]: https://coveralls.io/github/rsuite/rsuite-checkpicker
+[coverage-badge]: https://coveralls.io/repos/github/rsuite/rsuite-checkpicker/badge.svg?branch=next
+[coverage]: https://coveralls.io/github/rsuite/rsuite-checkpicker?branch=next
