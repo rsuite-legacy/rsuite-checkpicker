@@ -6,7 +6,7 @@
 - 支持自定选项
 - 支持分组
 
-> `rsuite-checkpicker` 只支持多选，如果只需要单选，可以使用 [`rsuite-checkpicker`](https://rsuitejs.com/rsuite-checkpicker)
+> `rsuite-checkpicker` 只支持多选，如果只需要单选，可以使用 [`rsuite-selectpicker`](https://rsuitejs.com/rsuite-selectpicker)
 
 版本与状态
 
