@@ -6,7 +6,7 @@
 - 支持自定选项
 - 支持分组
 
-> `rsuite-checkpicker` 只支持多选，如果只需要单选，可以使用 [`rsuite-selectpicker`](https://rsuitejs.com/rsuite-selectpicker)
+> `rsuite-checkpicker` 只支持多选，如果只需要单选，可以使用 [`rsuite-checkpicker`](https://rsuitejs.com/rsuite-checkpicker)
 
 版本与状态
 
@@ -54,16 +54,17 @@ const data = [{
 
 
 
-[npm-badge]: https://img.shields.io/npm/v/rsuite-checkpicker.svg
+
+[npm-badge]: https://img.shields.io/npm/v/rsuite-checkpicker.svg?style=flat-square
 [npm]: https://www.npmjs.com/package/rsuite-checkpicker
 
 
-[npm-beta-badge]: https://img.shields.io/npm/v/rsuite-checkpicker/beta.svg
+[npm-beta-badge]: https://img.shields.io/npm/v/rsuite-checkpicker/beta.svg?style=flat-square
 [npm-beta]: https://www.npmjs.com/package/rsuite-checkpicker
 
 
-[build-badge]: https://travis-ci.org/rsuite/rsuite-checkpicker.svg
+[build-badge]: https://img.shields.io/travis/rsuite/rsuite-checkpicker.svg?style=flat-square
 [build]: https://travis-ci.org/rsuite/rsuite-checkpicker
 
-[coverage-badge]: https://coveralls.io/repos/github/rsuite/rsuite-checkpicker/badge.svg?branch=next
-[coverage]: https://coveralls.io/github/rsuite/rsuite-checkpicker?branch=next
+[coverage-badge]: https://img.shields.io/coveralls/rsuite/rsuite-checkpicker.svg?style=flat-square
+[coverage]: https://coveralls.io/github/rsuite/rsuite-checkpicker
