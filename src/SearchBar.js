@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import _ from 'lodash';
 
 const propTypes = {
@@ -22,6 +23,7 @@ class SearchBar extends React.Component {
     const {
       value,
       children,
+      className,
       ...props
     } = this.props;
 
@@ -30,7 +32,7 @@ class SearchBar extends React.Component {
     return (
       <div
         {...elementProps}
-        className="search-bar"
+        className={classNames('search-bar', className)}
       >
         <input
           className="search-bar-input"

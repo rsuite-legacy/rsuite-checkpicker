@@ -26,6 +26,7 @@ const propTypes = {
   groupBy: PropTypes.string,
   dropup: PropTypes.bool,
   onSearch: PropTypes.func,
+  onToggle: PropTypes.func,
   disabled: PropTypes.bool,
   inverse: PropTypes.bool,
   value: PropTypes.array,
@@ -37,6 +38,7 @@ const propTypes = {
   autoAdjustPosition: PropTypes.bool,
   searchable: PropTypes.bool,
   cleanable: PropTypes.bool,
+  expand: PropTypes.bool,
   renderExtraFooter: PropTypes.func
 };
 
@@ -52,14 +54,14 @@ const defaultProps = {
 class Dropdown extends React.Component {
   constructor(props) {
     super(props);
-    const { data, value, defaultValue, groupBy, valueKey, labelKey, dropup } = props;
+    const { data, expand, value, defaultValue, groupBy, valueKey, labelKey, dropup } = props;
     const nextValue = _.clone(value || defaultValue) || [];
     this.state = {
       dropup,
       value: nextValue,
       // Used to hover the active item  when trigger `onKeydown`
       focusItemValue: nextValue ? nextValue[0] : undefined,
-      expand: false,
+      expand,
       searchKeyword: '',
       filteredData: data
     };
