@@ -1,6 +1,6 @@
 {
   "name": "rsuite-checkpicker",
-  "version": "1.0.0-beta.7",
+  "version": "1.0.0",
   "description": "A react component for replacing default select and dropdown.",
   "scripts": {
     "dev": "NODE_ENV=development webpack-dev-server  --inline --progress --colors --port 3100 --host 0.0.0.0 ",
@@ -57,6 +57,8 @@
     "coveralls": "^2.13.1",
     "cross-env": "^2.0.0",
     "css-loader": "^0.23.1",
+    "enzyme": "^3.1.0",
+    "enzyme-adapter-react-15": "^1.0.3",
     "eslint": "^3.19.0",
     "eslint-config-airbnb": "^15.0.1",
     "eslint-plugin-babel": "^4.1.1",
@@ -86,9 +88,10 @@
     "react": "^15.4.0",
     "react-dom": "^15.4.0",
     "react-hot-loader": "^3.0.0-beta.6",
+    "react-test-renderer": "^16.0.0",
     "rsuite": "^2.0.5",
     "rsuite-affix": "^1.0.3",
-    "sinon": "^1.17.4",
+    "sinon": "^4.0.2",
     "sinon-chai": "^2.8.0",
     "style-loader": "^0.13.1",
     "teaspoon": "6.0.0",
