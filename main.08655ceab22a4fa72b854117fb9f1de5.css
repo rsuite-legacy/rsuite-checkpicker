@@ -1,4 +1,4 @@
-/*! Last update: Tue Oct 31 2017 14:35:49 GMT+0800 (CST) */
+/*! Last update: Tue Nov 21 2017 15:04:21 GMT+0800 (CST) */
 @charset "utf-8";
 @keyframes slideUpIn {
   0% {
@@ -38,6 +38,9 @@
 }
 .rsuite-checkpicker {
   /* settings */
+}
+.rsuite-checkpicker-dropup .rsuite-checkpicker-toggle-arrow::before {
+  content: "\F106";
 }
 .rsuite-checkpicker-dropdown {
   position: relative;
@@ -112,13 +115,7 @@
   padding: 8px 26px 7px 18px;
 }
 .rsuite-checkpicker-dropdown.expand.rsuite-checkpicker-dropup .rsuite-checkpicker-toggle-arrow {
-  top: 15px;
-  border-color: transparent transparent #575757;
-  border-width: 4px;
-}
-.rsuite-checkpicker-dropdown.expand .rsuite-checkpicker-toggle-arrow {
-  border-color: #575757 transparent transparent;
-  border-width: 4px 4px 0;
+  top: 9px;
 }
 .rsuite-checkpicker-dropdown-menu {
   overflow: auto;
@@ -290,7 +287,7 @@
   content: '';
   display: block;
   position: absolute;
-  right: 17px;
+  right: 10px;
   top: 14px;
   border-color: #575757 transparent transparent;
   border-width: 4px 4px 0;
@@ -332,14 +329,25 @@
 }
 .rsuite-checkpicker-toggle-arrow {
   content: '';
+  font-family: 'RSuiteIconFont';
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  display: inline-block;
+  text-transform: none;
+  font-size: 14px;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 20px;
   display: block;
   position: absolute;
-  right: 17px;
-  top: 14px;
-  border-style: solid;
-  border-color: transparent #575757 transparent transparent;
-  border-width: 4px;
-  transition: border 200ms;
+  right: 10px;
+  top: 8px;
+}
+.rsuite-checkpicker-toggle-arrow::before {
+  content: "\F107";
 }
 .rsuite-checkpicker-toggle-clean {
   position: absolute;
@@ -991,8 +999,8 @@ th {
 }
 @font-face {
   font-family: 'RSuiteIconFont';
-  src: url(./resources/a961c61951bd598567414eec4dcb3e8d.eot);
-  src: url(./resources/a961c61951bd598567414eec4dcb3e8d.eot?#iefix) format('eot'), url(./resources/62c0e49aeaef05240763fa516e4e43c9.ttf) format('truetype'), url(./resources/76200de31033c325b5be8cd28a2f2fa5.woff) format('woff'), url(./resources/0e9ea536abd4d388e393d83f4cffcb90.svg#RSuiteIconFont) format('svg');
+  src: url(./resources/0ea95166c66b348f315019693fd3dff3.eot);
+  src: url(./resources/0ea95166c66b348f315019693fd3dff3.eot?#iefix) format('eot'), url(./resources/a3f758223fd4a99dcc9e998b167449d9.ttf) format('truetype'), url(./resources/5c86f182f7f95d55ab389ec517721822.woff) format('woff'), url(./resources/8e5712b948f399d52bd4ef1f45e9f67b.svg#RSuiteIconFont) format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -3192,6 +3200,9 @@ th {
 }
 .icon-tags:before {
   content: "\F02C";
+}
+.icon-target:before {
+  content: "\EA03";
 }
 .icon-tasks:before {
   content: "\F0AE";
