@@ -144,8 +144,8 @@ class Dropdown extends React.Component {
 
   unbindEvent() {
     this.docClickListener && this.docClickListener.off();
-    this.docScrollListener && this.docClickListener.off();
-    this.docResizelListener && this.docClickListener.off();
+    this.docScrollListener && this.docScrollListener.off();
+    this.docResizelListener && this.docResizelListener.off();
   }
   /**
    * Close menu when click document
@@ -169,8 +169,8 @@ class Dropdown extends React.Component {
 
     const keyword = searchKeyword.toLocaleLowerCase();
 
-    if (typeof label === 'string') {
-      return label.toLocaleLowerCase().indexOf(keyword) >= 0;
+    if (typeof label === 'string' || typeof label === 'number') {
+      return `${label}`.toLocaleLowerCase().indexOf(keyword) >= 0;
     } else if (React.isValidElement(label)) {
       const nodes = reactToString(label);
       return nodes.join('').toLocaleLowerCase().indexOf(keyword) >= 0;
