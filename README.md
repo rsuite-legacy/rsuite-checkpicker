@@ -6,7 +6,7 @@
 - 支持自定选项
 - 支持分组
 
-> `rsuite-checkpicker` 只支持多选，如果只需要单选，可以使用 [`rsuite-checkpicker`](https://rsuitejs.com/rsuite-checkpicker)
+> `rsuite-checkpicker` 只支持多选，如果只需要单选，可以使用 [`rsuite-selectpicker`](https://rsuitejs.com/rsuite-selectpicker)
 
 版本与状态
 
@@ -32,7 +32,7 @@ npm i rsuite-checkpicker --save
 ```
 
 
-### 示例
+### 示例代码
 
 ```jsx
 import Picker from 'rsuite-checkpicker';
@@ -61,7 +61,6 @@ const data = [{
 
 [npm-beta-badge]: https://img.shields.io/npm/v/rsuite-checkpicker/beta.svg?style=flat-square
 [npm-beta]: https://www.npmjs.com/package/rsuite-checkpicker
-
 
 [build-badge]: https://img.shields.io/travis/rsuite/rsuite-checkpicker.svg?style=flat-square
 [build]: https://travis-ci.org/rsuite/rsuite-checkpicker

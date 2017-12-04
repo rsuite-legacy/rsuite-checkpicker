@@ -1,4 +1,40 @@
 
+
+### 默认
+
+<!--start-code-->
+```js
+class SimpleExample extends React.Component {
+  render() {
+    return (
+      <div className="example-item">
+        <CheckPicker
+          data={data}
+          placeholder="请选择"
+        />
+        <br />
+        <CheckPicker
+          data={[
+            { id: 1, text: 11 },
+            { id: 2, text: 22 },
+            { id: 3, text: 33 },
+          ]}
+          disabledItemValues={[1]}
+          defaultValue={[2]}
+          labelKey="text"
+          valueKey="id"
+          placeholder="请选择"
+        />
+      </div>
+    );
+  }
+}
+
+ReactDOM.render(<SimpleExample />);
+```
+<!--end-code-->
+
+
 ```html
 <CheckPicker
   data={data}
@@ -16,7 +52,3 @@
   valueKey="id"
 />
 ```
-
-
-> [示例代码](https://github.com/rsuite/rsuite-checkpicker/blob/master/docs/examples/SimpleExample.js)
-
