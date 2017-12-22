@@ -4,7 +4,7 @@ export default [
     value: 'Eugenia',
     role: 'Master'
   }, {
-    label: 'Kariane-Kariane-loooooooooooooooooooooooooooooong',
+    label: 'Kariane',
     value: 'Kariane',
     role: 'Master'
   }, {

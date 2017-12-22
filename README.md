@@ -12,9 +12,7 @@
 
 [![npm][npm-badge]][npm]
 
-[![npm][npm-beta-badge]][npm-beta]
-
-[![Travis][build-badge]][build] [![Coverage Status][coverage-badge]][coverage]
+[![Travis][build-badge]][build]
 
 ## 快速开始
 
@@ -55,14 +53,14 @@ const data = [{
 
 
 
-[npm-badge]: https://img.shields.io/npm/v/rsuite-checkpicker.svg?style=flat-square
+[npm-badge]: https://img.shields.io/npm/v/rsuite-checkpicker/version2.x.svg?style=flat-square
 [npm]: https://www.npmjs.com/package/rsuite-checkpicker
 
 
 [npm-beta-badge]: https://img.shields.io/npm/v/rsuite-checkpicker/beta.svg?style=flat-square
 [npm-beta]: https://www.npmjs.com/package/rsuite-checkpicker
 
-[build-badge]: https://img.shields.io/travis/rsuite/rsuite-checkpicker.svg?style=flat-square
+[build-badge]: https://img.shields.io/badge/build-passing-green.svg?style=flat-square
 [build]: https://travis-ci.org/rsuite/rsuite-checkpicker
 
 [coverage-badge]: https://img.shields.io/coveralls/rsuite/rsuite-checkpicker.svg?style=flat-square
