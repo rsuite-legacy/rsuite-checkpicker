@@ -40,7 +40,7 @@ describe('Dropdown', () => {
         return (
           <Dropdown
             dropup={dropup}
-            expand
+            defaultOpen
             data={items}
             value={value}
           />
@@ -81,7 +81,7 @@ describe('Dropdown', () => {
 
     const instance = ReactTestUtils.renderIntoDocument(
       <Dropdown
-        expand
+        defaultOpen
         data={data}
         defaultValue={['Eugenia']}
       />
@@ -95,7 +95,7 @@ describe('Dropdown', () => {
 
     const instance = ReactTestUtils.renderIntoDocument(
       <Dropdown
-        expand
+        defaultOpen
         data={data}
         value={['Eugenia']}
       />
@@ -139,7 +139,7 @@ describe('Dropdown', () => {
 
     const instance = ReactTestUtils.renderIntoDocument(
       <Dropdown
-        expand
+        defaultOpen
         data={data}
         value={['Louisa', 'Kariane']}
       />
@@ -154,7 +154,7 @@ describe('Dropdown', () => {
   it('Should active item by `defaultValue`', () => {
     const instance = ReactTestUtils.renderIntoDocument(
       <Dropdown
-        expand
+        defaultOpen
         data={data}
         defaultValue={['Louisa', 'Kariane']}
       />
@@ -168,7 +168,7 @@ describe('Dropdown', () => {
   it('Should render a group', () => {
     const instance = ReactTestUtils.renderIntoDocument(
       <Dropdown
-        expand
+        defaultOpen
         groupBy="role"
         data={data}
       />
@@ -206,7 +206,7 @@ describe('Dropdown', () => {
     };
     const instance = ReactTestUtils.renderIntoDocument(
       <Dropdown
-        expand
+        defaultOpen
         onChange={doneOp}
         data={data}
       />
@@ -222,7 +222,7 @@ describe('Dropdown', () => {
     };
     const instance = ReactTestUtils.renderIntoDocument(
       <Dropdown
-        expand
+        defaultOpen
         onToggle={doneOp}
         data={data}
       />
@@ -267,7 +267,7 @@ describe('Dropdown', () => {
     };
     const instance = ReactTestUtils.renderIntoDocument(
       <Dropdown
-        expand
+        defaultOpen
         onSearch={doneOp}
       />
     );
@@ -280,7 +280,7 @@ describe('Dropdown', () => {
   it('Should hover item by keyCode=40 ', (done) => {
     const instance = ReactTestUtils.renderIntoDocument(
       <Dropdown
-        expand
+        defaultOpen
         data={data}
         defaultValue={['Eugenia']}
       />
@@ -298,7 +298,7 @@ describe('Dropdown', () => {
   it('Should hover item by keyCode=38 ', (done) => {
     const instance = ReactTestUtils.renderIntoDocument(
       <Dropdown
-        expand
+        defaultOpen
         data={data}
         defaultValue={['Kariane']}
       />
@@ -319,7 +319,7 @@ describe('Dropdown', () => {
     };
     const instance = ReactTestUtils.renderIntoDocument(
       <Dropdown
-        expand
+        defaultOpen
         data={data}
         onChange={doneOp}
         defaultValue={['Kariane']}
@@ -333,7 +333,7 @@ describe('Dropdown', () => {
 
     const instance = ReactTestUtils.renderIntoDocument(
       <Dropdown
-        expand
+        defaultOpen
         data={data}
         defaultValue={['Kariane']}
       />
