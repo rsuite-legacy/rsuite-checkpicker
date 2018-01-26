@@ -27,6 +27,8 @@ const propTypes = {
   dropup: PropTypes.bool,
   onSearch: PropTypes.func,
   onToggle: PropTypes.func,
+  onOpen: PropTypes.func,
+  onClose: PropTypes.func,
   disabled: PropTypes.bool,
   inverse: PropTypes.bool,
   value: PropTypes.array,
@@ -38,7 +40,8 @@ const propTypes = {
   autoAdjustPosition: PropTypes.bool,
   searchable: PropTypes.bool,
   cleanable: PropTypes.bool,
-  expand: PropTypes.bool,
+  open: PropTypes.bool,
+  defaultOpen: PropTypes.bool,
   renderExtraFooter: PropTypes.func
 };
 
@@ -54,14 +57,14 @@ const defaultProps = {
 class Dropdown extends React.Component {
   constructor(props) {
     super(props);
-    const { data, expand, value, defaultValue, groupBy, valueKey, labelKey, dropup } = props;
+    const { data, defaultOpen, value, defaultValue, groupBy, valueKey, labelKey, dropup } = props;
     const nextValue = _.clone(value || defaultValue) || [];
     this.state = {
       dropup,
       value: nextValue,
       // Used to hover the active item  when trigger `onKeydown`
       focusItemValue: nextValue ? nextValue[0] : undefined,
-      expand,
+      expand: defaultOpen,
       searchKeyword: '',
       filteredData: data
     };
@@ -136,6 +139,12 @@ class Dropdown extends React.Component {
     this.mounted = isMounted;
   }
 
+  getOpenState = () => {
+    const { expand } = this.state;
+    const { open } = this.props;
+    return _.isUndefined(open) ? expand : open;
+  }
+
   bindEvent() {
     this.docClickListener = on(document, 'click', this.handleDocumentClick);
     this.docScrollListener = on(document, 'scroll', this.autoAdjustDropdownPosition);
@@ -152,7 +161,7 @@ class Dropdown extends React.Component {
    */
   handleDocumentClick = (event) => {
     if (this.isMounted && !this.container.contains(event.target)) {
-      this.setState({ expand: false });
+      this.close();
     }
   }
 
@@ -288,31 +297,46 @@ class Dropdown extends React.Component {
 
   closeDropdown = () => {
     const value = this.getValue();
+    this.close();
     this.setState({
-      expand: false,
       focusItemValue: value ? value[0] : undefined
     });
   }
 
   toggleDropdown = (event) => {
-    const { onToggle, disabled } = this.props;
+    const { onToggle, disabled, open } = this.props;
     const expand = !this.state.expand;
 
-    if (disabled) {
+    if (disabled || !_.isUndefined(open)) {
       return;
     }
 
-    this.setState({ expand }, () => {
+    const callback = () => {
       onToggle && onToggle(expand, event);
+    };
+
+    if (expand) {
+      this.open(callback);
+      return;
+    }
+
+    this.close(callback);
+  }
+
+  close(callback) {
+    const { onClose } = this.props;
+    this.setState({ expand: false }, () => {
+      onClose && onClose();
+      callback && callback();
     });
   }
 
-  close() {
-    this.setState({ expand: false });
-  }
-
-  open() {
-    this.setState({ expand: true });
+  open(callback) {
+    const { onOpen } = this.props;
+    this.setState({ expand: true }, () => {
+      onOpen && onOpen();
+      callback && callback();
+    });
   }
 
   handleClean = (event) => {
@@ -419,12 +443,14 @@ class Dropdown extends React.Component {
       locale,
       cleanable,
       placeholder,
+      open,
       ...props
     } = this.props;
 
-    const { expand, dropup } = this.state;
+    const { dropup } = this.state;
     const value = this.getValue();
     const elementProps = _.omit(props, Object.keys(propTypes));
+    const expand = this.getOpenState();
 
     let placeholderText = (value && value.length) ? `${value.length} selected` : (
       <div className="placeholder-text">
