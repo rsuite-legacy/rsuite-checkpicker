@@ -19,6 +19,15 @@ class SimpleExample extends React.Component {
             { id: 2, text: 22 },
             { id: 3, text: 33 },
           ]}
+          onOpen={()=>{
+            console.log('open');
+          }}
+          onClose={()=>{
+            console.log('close');
+          }}
+          onToggle={(expand)=>{
+            console.log(expand,'toggle');
+          }}
           disabledItemValues={[1]}
           defaultValue={[2]}
           labelKey="text"
