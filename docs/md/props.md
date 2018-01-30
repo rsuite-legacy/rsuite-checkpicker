@@ -17,11 +17,11 @@
 | onChange              | function(`value`:array, event)                                    | `value` 发生改变时的回调函数                |
 | onSelect              | function(`value`:array, `item`:object , event)                    | 选项被点击选择后的回调函数                  |
 | onSearch              | function(`searchKeyword`:string, event)                           | 搜索的回调函数                              |
-| onItemGroupTitleClick | function(event)                                                   | 点击分组标题的回调函数                      |
+| onGroupTitleClick | function(event)                                                   | 点击分组标题的回调函数                      |
 | placeholder           | string  `('Please Select')`                                       | 占位符                                      |
-| renderPlaceholder     | function(`value`:array, `checkItems`:array, `placeholder`:string) | 自定义被选中的选项                          |
+| renderValue     | function(`value`:array, `checkItems`:array, `placeholder`:string) | 自定义被选中的选项                          |
 | renderMenuItem        | function(`label`:string, `item`:object)                           | 自定义选项                                  |
-| renderMenuItemGroup   | function(`groupTitle`:string, `item`:object)                      | 自定义选项组                                |
+| renderMenuGroup   | function(`groupTitle`:string, `item`:object)                      | 自定义选项组                                |
 | locale                | object                                                            | 本地语言                                    |
 | searchable            | bool `(true)`                                                     | 可以搜索                                    |
 | cleanable             | bool `(true)`                                                     | 可以清除                                    |

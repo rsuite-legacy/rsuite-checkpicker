@@ -2,69 +2,97 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import _ from 'lodash';
-import { on } from 'dom-lib';
-import SearchBar from './SearchBar';
+import { IntlProvider, FormattedMessage } from 'rsuite-intl';
+import OverlayTrigger from 'rsuite-utils/lib/Overlay/OverlayTrigger';
+import {
+  reactToString,
+  filterNodesOfTree,
+  getDataGroupBy,
+  getUnhandledProps,
+  prefix
+} from 'rsuite-utils/lib/utils';
+
+import {
+  SearchBar,
+  Toggle,
+  MenuWrapper,
+  constants
+} from 'rsuite-utils/lib/Picker';
+
+
 import DropdownMenu from './DropdownMenu';
-import DropdownToggle from './DropdownToggle';
-import reactToString from './utils/reactToString';
-import filterNodesOfTree from './utils/filterNodesOfTree';
-import decorate from './utils/decorate';
-import getDataGroupBy from './utils/getDataGroupBy';
 import defaultLocale from './locale';
-import { IntlProvider, FormattedMessage } from './intl';
 
-const propTypes = {
-  ..._.omit(DropdownMenu.propTypes, [
-    'group',
-    'activeItemValues',
-    'focusItemValue'
-  ]),
-
-  /**
-   * group by key in `data`
-   */
-  groupBy: PropTypes.string,
-  dropup: PropTypes.bool,
-  onSearch: PropTypes.func,
-  onToggle: PropTypes.func,
-  onOpen: PropTypes.func,
-  onClose: PropTypes.func,
-  disabled: PropTypes.bool,
-  inverse: PropTypes.bool,
-  value: PropTypes.array,
-  defaultValue: PropTypes.array,
-  renderPlaceholder: PropTypes.func,
-  placeholder: PropTypes.string,
-  onChange: PropTypes.func,
-  locale: PropTypes.object,
-  autoAdjustPosition: PropTypes.bool,
-  searchable: PropTypes.bool,
-  cleanable: PropTypes.bool,
-  open: PropTypes.bool,
-  defaultOpen: PropTypes.bool,
-  renderExtraFooter: PropTypes.func
-};
-
-const defaultProps = {
-  ...DropdownMenu.defaultProps,
-  locale: defaultLocale,
-  autoAdjustPosition: true,
-  cleanable: true,
-  searchable: true,
-  placeholder: 'placeholder'
-};
+const { namespace } = constants;
 
 class Dropdown extends React.Component {
+  static propTypes = {
+    classPrefix: PropTypes.string,
+    data: PropTypes.array,
+    disabled: PropTypes.bool,
+    disabledItemValues: PropTypes.array,
+    height: PropTypes.number,
+    valueKey: PropTypes.string,
+    labelKey: PropTypes.string,
+    value: PropTypes.array,
+    defaultValue: PropTypes.array,
+    renderMenuItem: PropTypes.func,
+    renderMenuGroup: PropTypes.func,
+    renderExtraFooter: PropTypes.func,
+    renderValue: PropTypes.func,
+    onChange: PropTypes.func,
+    onSelect: PropTypes.func,
+    onGroupTitleClick: PropTypes.func,
+    onSearch: PropTypes.func,
+    onOpen: PropTypes.func,
+    onClose: PropTypes.func,
+    /**
+     * group by key in `data`
+     */
+    groupBy: PropTypes.any,
+    placeholder: PropTypes.node,
+    locale: PropTypes.object,
+    searchable: PropTypes.bool,
+    cleanable: PropTypes.bool,
+    open: PropTypes.bool,
+    defaultOpen: PropTypes.bool,
+    placement: PropTypes.oneOf([
+      'bottomLeft', 'bottomRight', 'topLeft', 'topRight',
+      'leftTop', 'rightTop', 'leftBottom', 'rightBottom'
+    ])
+  };
+
+  static defaultProps = {
+    classPrefix: `${namespace}-check`,
+    data: [],
+    disabledItemValues: [],
+    height: 320,
+    valueKey: 'value',
+    labelKey: 'label',
+    locale: defaultLocale,
+    searchable: true,
+    cleanable: true,
+    placement: 'bottomLeft'
+  };
+
+
   constructor(props) {
     super(props);
-    const { data, defaultOpen, value, defaultValue, groupBy, valueKey, labelKey, dropup } = props;
+    const {
+      data,
+      value,
+      defaultValue,
+      groupBy,
+      valueKey,
+      labelKey
+    } = props;
+
     const nextValue = _.clone(value || defaultValue) || [];
+
     this.state = {
-      dropup,
       value: nextValue,
       // Used to hover the active item  when trigger `onKeydown`
       focusItemValue: nextValue ? nextValue[0] : undefined,
-      expand: defaultOpen,
       searchKeyword: '',
       filteredData: data
     };
@@ -74,44 +102,20 @@ class Dropdown extends React.Component {
     }
   }
 
-  componentDidMount() {
-    this.isMounted = true;
-  }
-
   componentWillReceiveProps(nextProps) {
-    const { value, data, dropup } = nextProps;
+    const { value, data } = nextProps;
     if (
       !_.isEqual(value, this.props.value) ||
-      !_.isEqual(data, this.props.data) ||
-      !_.isEqual(dropup, this.props.dropup)
+      !_.isEqual(data, this.props.data)
     ) {
       this.setState({
-        dropup,
         value,
+        focusItemValue: value,
         filteredData: data
       });
     }
   }
 
-  componentWillUpdate(nextProps, nextState) {
-
-    if (nextState.expand === this.state.expand) {
-      return;
-    }
-
-    if (nextState.expand) {
-      this.bindEvent();
-      this.autoAdjustDropdownPosition();
-
-    } else {
-      this.unbindEvent();
-    }
-  }
-
-  componentWillUnmount() {
-    this.unbindEvent();
-    this.isMounted = false;
-  }
 
   getFocusableMenuItems = () => {
     const { labelKey } = this.props;
@@ -130,39 +134,6 @@ class Dropdown extends React.Component {
     const { value } = this.props;
     const nextValue = _.isUndefined(value) ? this.state.value : value;
     return _.clone(nextValue) || [];
-  }
-
-  get isMounted() {
-    return this.mounted;
-  }
-  set isMounted(isMounted) {
-    this.mounted = isMounted;
-  }
-
-  getOpenState = () => {
-    const { expand } = this.state;
-    const { open } = this.props;
-    return _.isUndefined(open) ? expand : open;
-  }
-
-  bindEvent() {
-    this.docClickListener = on(document, 'click', this.handleDocumentClick);
-    this.docScrollListener = on(document, 'scroll', this.autoAdjustDropdownPosition);
-    this.docResizelListener = on(window, 'resize', this.autoAdjustDropdownPosition);
-  }
-
-  unbindEvent() {
-    this.docClickListener && this.docClickListener.off();
-    this.docScrollListener && this.docScrollListener.off();
-    this.docResizelListener && this.docResizelListener.off();
-  }
-  /**
-   * Close menu when click document
-   */
-  handleDocumentClick = (event) => {
-    if (this.isMounted && !this.container.contains(event.target)) {
-      this.close();
-    }
   }
 
   /**
@@ -238,8 +209,8 @@ class Dropdown extends React.Component {
   }
 
   handleKeyDown = (event) => {
-    const { expand } = this.state;
-    if (!expand) {
+
+    if (!this.menuContainer) {
       return;
     }
 
@@ -297,45 +268,11 @@ class Dropdown extends React.Component {
 
   closeDropdown = () => {
     const value = this.getValue();
-    this.close();
+    if (this.trigger) {
+      this.trigger.hide();
+    }
     this.setState({
       focusItemValue: value ? value[0] : undefined
-    });
-  }
-
-  toggleDropdown = (event) => {
-    const { onToggle, disabled, open } = this.props;
-    const expand = !this.state.expand;
-
-    if (disabled || !_.isUndefined(open)) {
-      return;
-    }
-
-    const callback = () => {
-      onToggle && onToggle(expand, event);
-    };
-
-    if (expand) {
-      this.open(callback);
-      return;
-    }
-
-    this.close(callback);
-  }
-
-  close(callback) {
-    const { onClose } = this.props;
-    this.setState({ expand: false }, () => {
-      onClose && onClose();
-      callback && callback();
-    });
-  }
-
-  open(callback) {
-    const { onOpen } = this.props;
-    this.setState({ expand: true }, () => {
-      onOpen && onOpen();
-      callback && callback();
     });
   }
 
@@ -349,28 +286,7 @@ class Dropdown extends React.Component {
     });
   }
 
-  autoAdjustDropdownPosition = () => {
-    const { height, dropup } = this.props;
-
-    if (!this.isMounted) {
-      return;
-    }
-
-    if (!_.isUndefined(dropup)) {
-      this.setState({ dropup });
-      return;
-    }
-
-    const el = this.container;
-    if (
-      el.getBoundingClientRect().bottom + height > window.innerHeight
-      && el.getBoundingClientRect().top - height > 0
-    ) {
-      this.setState({ dropup: true });
-    } else {
-      this.setState({ dropup: false });
-    }
-  }
+  addPrefix = name => prefix(this.props.classPrefix)(name)
 
   renderDropdownMenu() {
     const {
@@ -378,13 +294,17 @@ class Dropdown extends React.Component {
       labelKey,
       groupBy,
       searchable,
-      renderExtraFooter
+      renderExtraFooter,
+      locale,
+      placement
     } = this.props;
 
-    const { focusItemValue, dropup } = this.state;
-    const classes = classNames('dropdown', {
-      'menu-dropup': dropup,
-    });
+    const { focusItemValue } = this.state;
+
+    const classes = classNames(
+      this.addPrefix('menu'),
+      `${namespace}-placement-${_.kebabCase(placement)}`
+    );
 
     let filteredData = filterNodesOfTree(data,
       item => this.shouldDisplay(item[labelKey])
@@ -395,39 +315,37 @@ class Dropdown extends React.Component {
       filteredData = getDataGroupBy(filteredData, groupBy);
     }
 
-    const menuProps = _.pick(this.props, Object.keys(DropdownMenu.propTypes));
-
-
-    const dropdownMenu = (
-      <DropdownMenu
-        {...menuProps}
-        ref={(ref) => {
-          this.menuContainer = ref;
-        }}
-        key="dropdownMenu"
-        activeItemValues={this.getValue()}
-        focusItemValue={focusItemValue}
-        data={filteredData}
-        group={!_.isUndefined(groupBy)}
-        onSelect={this.handleSelect}
-      />
+    const menuProps = _.pick(
+      this.props,
+      DropdownMenu.handledProps.filter(name => name !== 'classPrefix')
     );
-
-    const searchBar = searchable ? (
-      <SearchBar
-        key="searchBar"
-        onChange={this.handleSearch}
-        value={this.state.searchKeyword}
-      />
-    ) : null;
-
     return (
-      <div
+      <MenuWrapper
         className={classes}
       >
-        {dropup ? [dropdownMenu, searchBar] : [searchBar, dropdownMenu]}
+        {
+          searchable ? (
+            <SearchBar
+              placeholder={locale.searchPlaceholder}
+              onChange={this.handleSearch}
+              value={this.state.searchKeyword}
+            />
+          ) : null
+        }
+        <DropdownMenu
+          {...menuProps}
+          ref={(ref) => {
+            this.menuContainer = ref;
+          }}
+          activeItemValues={this.getValue()}
+          focusItemValue={focusItemValue}
+          data={filteredData}
+          group={!_.isUndefined(groupBy)}
+          onSelect={this.handleSelect}
+        />
         {renderExtraFooter && renderExtraFooter()}
-      </div>
+      </MenuWrapper>
+
     );
   }
 
@@ -437,47 +355,42 @@ class Dropdown extends React.Component {
       valueKey,
       labelKey,
       className,
-      renderPlaceholder,
-      disabled,
-      inverse,
-      locale,
-      cleanable,
       placeholder,
+      renderValue,
+      disabled,
+      cleanable,
+      locale,
+      classPrefix,
+      onOpen,
+      onClose,
+      placement,
       open,
-      ...props
+      defaultOpen,
+      ...rest
     } = this.props;
 
-    const { dropup } = this.state;
+
+    const unhandled = getUnhandledProps(Dropdown, rest);
     const value = this.getValue();
-    const elementProps = _.omit(props, Object.keys(propTypes));
-    const expand = this.getOpenState();
+    const hasValue = !!value;
 
-    let placeholderText = (value && value.length) ? `${value.length} selected` : (
-      <div className="placeholder-text">
-        <FormattedMessage id={placeholder} />
-      </div>
-    );
-
-
-    if (renderPlaceholder) {
-      placeholderText = renderPlaceholder(
+    let selectedLabel = (value && value.length) ? `${value.length} selected` : placeholder;
+    if (renderValue) {
+      selectedLabel = renderValue(
         value,
-        data.filter(item => value.some(val => _.eq(item[valueKey], val))),
-        placeholderText
+        data.filter(item => value.some(val => _.eq(item[valueKey], val)))
       );
     }
 
-    const classes = classNames(this.prefix('dropdown'), {
-      [this.prefix('dropup')]: dropup,
-      disabled,
-      inverse,
-      expand
-    }, className);
+    const classes = classNames(classPrefix, {
+      [this.addPrefix('has-value')]: hasValue,
+      [this.addPrefix('disabled')]: disabled
+    }, `${namespace}-placement-${_.kebabCase(placement)}`, className);
 
     return (
       <IntlProvider locale={locale}>
         <div
-          {...elementProps}
+          {...unhandled}
           className={classes}
           onKeyDown={this.handleKeyDown}
           tabIndex={-1}
@@ -486,15 +399,27 @@ class Dropdown extends React.Component {
             this.container = ref;
           }}
         >
-          <DropdownToggle
-            onClick={this.toggleDropdown}
-            onClean={this.handleClean}
-            cleanable={cleanable && !disabled}
-            value={value}
+          <OverlayTrigger
+            ref={(ref) => {
+              this.trigger = ref;
+            }}
+            open={open}
+            defaultOpen={defaultOpen}
+            disabled={disabled}
+            trigger="click"
+            placement={placement}
+            onEntered={onOpen}
+            onExited={onClose}
+            speaker={this.renderDropdownMenu()}
           >
-            {placeholderText}
-          </DropdownToggle>
-          {expand && this.renderDropdownMenu()}
+            <Toggle
+              onClean={this.handleClean}
+              cleanable={cleanable && !disabled}
+              hasValue={!!value && !!value.length}
+            >
+              {selectedLabel || <FormattedMessage id="placeholder" />}
+            </Toggle>
+          </OverlayTrigger>
         </div>
       </IntlProvider>
     );
@@ -502,7 +427,4 @@ class Dropdown extends React.Component {
   }
 }
 
-Dropdown.propTypes = propTypes;
-Dropdown.defaultProps = defaultProps;
-
-export default decorate()(Dropdown);
+export default Dropdown;

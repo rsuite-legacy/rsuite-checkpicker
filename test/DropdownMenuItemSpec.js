@@ -4,7 +4,6 @@ import { findDOMNode } from 'react-dom';
 
 import DropdownMenuItem from '../src/DropdownMenuItem';
 
-
 describe('DropdownMenuItem', () => {
   it('Should output a li', () => {
     const Title = 'Title';
@@ -38,13 +37,13 @@ describe('DropdownMenuItem', () => {
     assert.ok(instanceDom.querySelector('label').className.match(/\bdisabled\b/));
   });
 
-  it('Should be hover', () => {
+  it('Should be focus', () => {
     const instance = ReactTestUtils.renderIntoDocument(
-      <DropdownMenuItem title="title" hover />
+      <DropdownMenuItem title="title" focus />
     );
 
     const instanceDom = findDOMNode(instance);
-    assert.ok(instanceDom.querySelector('label').className.match(/\bhover\b/));
+    assert.ok(instanceDom.querySelector('label').className.match(/\bfocus\b/));
   });
 
 

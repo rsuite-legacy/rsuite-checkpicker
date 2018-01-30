@@ -3,36 +3,45 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { getPosition, scrollTop, getHeight } from 'dom-lib';
 import classNames from 'classnames';
-import decorate from './utils/decorate';
 
-import DropdownMenuItemGroup from './DropdownMenuItemGroup';
+import { getUnhandledProps } from 'rsuite-utils/lib/utils';
+import { namespace } from 'rsuite-utils/lib/Picker/constants';
+
+import DropdownMenuGroup from './DropdownMenuGroup';
 import DropdownMenuItem from './DropdownMenuItem';
 
-const propTypes = {
-  data: PropTypes.array,
-  group: PropTypes.bool,
-  disabledItemValues: PropTypes.array,
-  activeItemValues: PropTypes.any,
-  focusItemValue: PropTypes.any,
-  height: PropTypes.number,
-  valueKey: PropTypes.string,
-  labelKey: PropTypes.string,
-  renderMenuItem: PropTypes.func,
-  renderMenuItemGroup: PropTypes.func,
-  onSelect: PropTypes.func,
-  onItemGroupTitleClick: PropTypes.func,
-};
-
-const defaultProps = {
-  data: [],
-  disabledItemValues: [],
-  height: 320,
-  valueKey: 'value',
-  labelKey: 'label'
-};
-
-
 class DropdownMenu extends React.Component {
+
+  static propTypes = {
+    classPrefix: PropTypes.string,
+    data: PropTypes.array,
+    group: PropTypes.bool,
+    disabledItemValues: PropTypes.array,
+    activeItemValues: PropTypes.any,
+    focusItemValue: PropTypes.any,
+    height: PropTypes.number,
+    valueKey: PropTypes.string,
+    labelKey: PropTypes.string,
+    renderMenuItem: PropTypes.func,
+    renderMenuGroup: PropTypes.func,
+    onSelect: PropTypes.func,
+    onGroupTitleClick: PropTypes.func,
+  };
+
+  static defaultProps = {
+    classPrefix: `${namespace}-check-menu-items`,
+    data: [],
+    disabledItemValues: [],
+    height: 320,
+    valueKey: 'value',
+    labelKey: 'label'
+  };
+
+  /**
+   * Note that `handledProps` are generated automatically during
+   * build with `babel-plugin-transform-react-flow-handled-props`
+   */
+  static handledProps = [];
 
   constructor(props) {
     super(props);
@@ -50,7 +59,7 @@ class DropdownMenu extends React.Component {
   }
 
   updateScrollPoistion() {
-    const activeItem = this.menuBodyContainer.querySelector('.hover');
+    const activeItem = this.menuBodyContainer.querySelector(`.${namespace}-check-menu-item-focus`);
     if (!activeItem) {
       return;
     }
@@ -79,8 +88,8 @@ class DropdownMenu extends React.Component {
       labelKey,
       data,
       renderMenuItem,
-      renderMenuItemGroup,
-      onItemGroupTitleClick,
+      renderMenuGroup,
+      onGroupTitleClick,
       disabledItemValues,
       group
     } = this.props;
@@ -99,22 +108,22 @@ class DropdownMenu extends React.Component {
         const onlyKey = _.isString(value) || _.isNumber(value) ? value : index;
 
         /**
-         * Render <DropdownMenuItemGroup>
+         * Render <DropdownMenuGroup>
          * when if `group` is enabled and `itme.children` is array
          */
         if (group && _.isArray(item.children)) {
           return (
-            <DropdownMenuItemGroup
+            <DropdownMenuGroup
               key={onlyKey}
               title={
-                renderMenuItemGroup ?
-                  renderMenuItemGroup(item.groupTitle, item) :
+                renderMenuGroup ?
+                  renderMenuGroup(item.groupTitle, item) :
                   item.groupTitle
               }
-              onClick={onItemGroupTitleClick}
+              onClick={onGroupTitleClick}
             >
               {createMenuItems(item.children, onlyKey)}
-            </DropdownMenuItemGroup>
+            </DropdownMenuGroup>
           );
         } else if (_.isUndefined(value) && !_.isArray(item.children)) {
           throw Error(`valueKey "${valueKey}" is not defined in "data" : ${index} `);
@@ -133,7 +142,7 @@ class DropdownMenu extends React.Component {
               !_.isUndefined(activeItemValues) &&
               activeItemValues.some(v => _.isEqual(v, value))
             }
-            hover={!_.isUndefined(focusItemValue) && _.eq(focusItemValue, value)}
+            focus={!_.isUndefined(focusItemValue) && _.eq(focusItemValue, value)}
             value={value}
             ref={(ref) => {
               if (ref && !disabled) {
@@ -159,15 +168,16 @@ class DropdownMenu extends React.Component {
       height,
       className,
       style,
-      ...props
+      classPrefix,
+      ...rest
     } = this.props;
 
-    const classes = classNames(this.prefix('dropdown-menu'), className);
-    const elementProps = _.omit(props, Object.keys(propTypes));
+    const classes = classNames(classPrefix, className);
+    const unhandled = getUnhandledProps(DropdownMenu, rest);
 
     return (
       <div
-        {...elementProps}
+        {...unhandled}
         className={classes}
         ref={(ref) => {
           this.menuBodyContainer = ref;
@@ -185,7 +195,4 @@ class DropdownMenu extends React.Component {
   }
 }
 
-DropdownMenu.propTypes = propTypes;
-DropdownMenu.defaultProps = defaultProps;
-
-export default decorate()(DropdownMenu);
+export default DropdownMenu;

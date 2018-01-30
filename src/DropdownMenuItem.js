@@ -1,71 +1,92 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import _ from 'lodash';
+import { getUnhandledProps, prefix } from 'rsuite-utils/lib/utils';
+import { namespace } from 'rsuite-utils/lib/Picker/constants';
 
-
-const propTypes = {
-  active: PropTypes.bool,
-  disabled: PropTypes.bool,
-  value: PropTypes.any,
-  onSelect: PropTypes.func,
-  onKeyDown: PropTypes.func,
-  hover: PropTypes.bool,
-  title: PropTypes.string,
-  getItemData: PropTypes.func
-};
 
 class DropdownMenuItem extends React.Component {
+
+  static propTypes = {
+    classPrefix: PropTypes.string,
+    active: PropTypes.bool,
+    disabled: PropTypes.bool,
+    value: PropTypes.any,
+    onSelect: PropTypes.func,
+    onKeyDown: PropTypes.func,
+    focus: PropTypes.bool,
+    title: PropTypes.string,
+    getItemData: PropTypes.func
+  };
+
+  static defaultProps = {
+    classPrefix: `${namespace}-check-menu-item`,
+  };
+
   handleChange = (event) => {
     const { value, disabled, onSelect } = this.props;
     if (!disabled && onSelect) {
       onSelect(value, event.target.checked, event);
     }
   }
+
   render() {
+
     const {
       active,
       onKeyDown,
       disabled,
-      hover,
+      focus,
       children,
       className,
-      ...props
+      classPrefix,
+      ...rest
     } = this.props;
 
-    const classes = classNames('menu-item', {
-      active,
-      hover,
-      disabled
+    const addPrefix = prefix(classPrefix);
+    const classes = classNames(classPrefix, {
+      [addPrefix('active')]: active,
+      [addPrefix('focus')]: focus,
+      [addPrefix('disabled')]: disabled
     });
 
-    const elementProps = _.omit(props, Object.keys(propTypes));
+    const unhandled = getUnhandledProps(DropdownMenuItem, rest);
+    const input = (
+      <span
+        className={addPrefix('wrapper')}
+      >
+        <input
+          checked={active}
+          type="checkbox"
+          disabled={disabled}
+          onChange={this.handleChange}
+        />
+        <span className={addPrefix('inner')} />
+      </span>
+    );
+
     return (
       <li
-        {...elementProps}
+        {...unhandled}
         className={className}
         role="menuitem"
       >
-        <label
-          className={classes}
-          tabIndex={-1}
-          role="presentation"
-          onKeyDown={disabled ? null : onKeyDown}
+        <div
+          className={addPrefix('checker')}
         >
-
-          <input
-            type="checkbox"
-            className="menu-item-checkbox"
-            onChange={this.handleChange}
-            checked={active}
-          />
-          {children}
-        </label>
+          <label
+            className={classes}
+            tabIndex={-1}
+            role="presentation"
+            onKeyDown={disabled ? null : onKeyDown}
+          >
+            {input}
+            {children}
+          </label>
+        </div>
       </li>
     );
   }
 }
-
-DropdownMenuItem.propTypes = propTypes;
 
 export default DropdownMenuItem;

@@ -3,7 +3,12 @@
 
 <!--start-code-->
 ```js
-const footerStyles = { padding: 10, textAlign: 'right', background: '#f5f5f5' };
+const footerStyles = {
+  padding: 10,
+  textAlign: 'right',
+  background: '#f5f5f5',
+  marginBottom:-10
+};
 
 class ExtraFooterExample extends React.Component {
   constructor() {
@@ -49,13 +54,13 @@ class ExtraFooterExample extends React.Component {
                   });
                 }}
               >
-                取消全选
+                反选
               </Button>
 
               <Button
                 shape="default"
                 onClick={() => {
-                  this.picker.close();
+                  this.picker.trigger.hide();
                 }}
               >
                 确定

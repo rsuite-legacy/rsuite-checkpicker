@@ -1,4 +1,4 @@
 export default {
-  placeholder: 'Please Select',
+  placeholder: 'Select',
   searchPlaceholder: 'Search'
 };

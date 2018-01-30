@@ -1,8 +1,17 @@
 import React from 'react';
 import ReactTestUtils from 'react-dom/test-utils';
 import { findDOMNode } from 'react-dom';
+import { namespace } from 'rsuite-utils/lib/Picker/constants';
 
 import DropdownMenu from '../src/DropdownMenu';
+
+
+const classPrefix = `${namespace}-check-menu`;
+const groupClassName = `.${classPrefix}-group`;
+const titleClassName = `.${classPrefix}-group-title`;
+const childrenClassName = `.${classPrefix}-group-children`;
+const itemClassName = `.${classPrefix}-item`;
+const itemActiveClassName = `.${classPrefix}-item-active`;
 
 const items = [{
   value: 'abc',
@@ -24,12 +33,13 @@ const items = [{
 
 describe('DropdownMenu', () => {
 
-  it('Should output a `dropdown-menu` ', () => {
+  it('Should output a `check-menu-items` ', () => {
     const instance = ReactTestUtils.renderIntoDocument(
       <DropdownMenu />
     );
     const instanceDom = findDOMNode(instance);
-    assert.ok(instanceDom.className.match(/\bdropdown-menu\b/));
+
+    assert.ok(instanceDom.className.match(/\bcheck-menu-items\b/));
   });
 
   it('Should output 3 `menu-item` ', () => {
@@ -50,7 +60,7 @@ describe('DropdownMenu', () => {
       />
     );
     const instanceDom = findDOMNode(instance);
-    assert.equal(instanceDom.querySelectorAll('.menu-item-group-children .menu-item').length, 2);
+    assert.equal(instanceDom.querySelectorAll(`${childrenClassName} ${itemClassName}`).length, 2);
   });
 
   it('Should be active item for value of `vv-abcd', () => {
@@ -62,7 +72,7 @@ describe('DropdownMenu', () => {
       />
     );
     const instanceDom = findDOMNode(instance);
-    assert.equal(instanceDom.querySelector('.menu-item-group-children .active').innerText, 'vv-abcd');
+    assert.equal(instanceDom.querySelector(`${childrenClassName} ${itemActiveClassName}`).innerText, 'vv-abcd');
   });
 
   it('Should have a height', () => {
@@ -120,10 +130,10 @@ describe('DropdownMenu', () => {
       />
     );
     const instanceDom = findDOMNode(instance);
-    ReactTestUtils.Simulate.change(instanceDom.querySelectorAll('input')[1]);
+    ReactTestUtils.Simulate.change(instanceDom.querySelectorAll(`${itemClassName} input`)[1]);
   });
 
-  it('Should call onItemGroupTitleClick callback ', (done) => {
+  it('Should call onGroupTitleClick callback ', (done) => {
     const doneOp = () => {
       done();
     };
@@ -131,11 +141,11 @@ describe('DropdownMenu', () => {
       <DropdownMenu
         data={items}
         group
-        onItemGroupTitleClick={doneOp}
+        onGroupTitleClick={doneOp}
       />
     );
     const instanceDom = findDOMNode(instance);
-    ReactTestUtils.Simulate.click(instanceDom.querySelector('.menu-item-group-title'));
+    ReactTestUtils.Simulate.click(instanceDom.querySelector(titleClassName));
   });
 
   it('Should call renderMenuItem callback ', () => {
@@ -147,19 +157,19 @@ describe('DropdownMenu', () => {
       />
     );
     const instanceDom = findDOMNode(instance);
-    assert.equal(instanceDom.querySelectorAll('.menu-item i').length, 4);
+    assert.equal(instanceDom.querySelectorAll(`${itemClassName} i`).length, 4);
   });
 
-  it('Should call renderMenuItemGroup callback ', () => {
+  it('Should call renderMenuGroup callback ', () => {
     const instance = ReactTestUtils.renderIntoDocument(
       <DropdownMenu
         group
         data={items}
-        renderMenuItemGroup={item => <i>{item}</i>}
+        renderMenuGroup={item => <i>{item}</i>}
       />
     );
     const instanceDom = findDOMNode(instance);
-    assert.equal(instanceDom.querySelectorAll('.menu-item-group i').length, 1);
+    assert.equal(instanceDom.querySelectorAll(`${groupClassName} i`).length, 1);
   });
 
   it('Should have a custom className', () => {
