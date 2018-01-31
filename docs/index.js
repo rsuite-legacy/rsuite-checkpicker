@@ -14,7 +14,7 @@ class App extends React.Component {
   render() {
     return (
       <PageContainer
-        activeKey="SelectPicker"
+        activeKey="CheckPicker"
         githubURL="https://github.com/rsuite/rsuite-checkpicker"
       >
 

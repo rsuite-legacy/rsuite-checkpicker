@@ -286,6 +286,15 @@ class Dropdown extends React.Component {
     });
   }
 
+  handleExited = () => {
+    const { onClose } = this.props;
+    const value = this.getValue();
+    onClose && onClose();
+    this.setState({
+      focusItemValue: value ? value[0] : undefined
+    });
+  }
+
   addPrefix = name => prefix(this.props.classPrefix)(name)
 
   renderDropdownMenu() {
@@ -322,6 +331,7 @@ class Dropdown extends React.Component {
     return (
       <MenuWrapper
         className={classes}
+        onKeyDown={this.handleKeyDown}
       >
         {
           searchable ? (
