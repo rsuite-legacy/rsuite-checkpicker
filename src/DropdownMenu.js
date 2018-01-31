@@ -1,5 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+// @flow
+
+import * as React from 'react';
 import _ from 'lodash';
 import { getPosition, scrollTop, getHeight } from 'dom-lib';
 import classNames from 'classnames';
@@ -10,29 +11,35 @@ import { namespace } from 'rsuite-utils/lib/Picker/constants';
 import DropdownMenuGroup from './DropdownMenuGroup';
 import DropdownMenuItem from './DropdownMenuItem';
 
-class DropdownMenu extends React.Component {
+type DefaultEvent = SyntheticEvent<*>;
+type DefaultEventFunction = (event: DefaultEvent) => void;
+type Props = {
+  classPrefix?: string,
+  data?: Array<any>,
+  group?: boolean,
+  disabledItemValues: Array<any>,
+  activeItemValues: Array<any>,
+  focusItemValue?: any,
+  maxHeight?: number,
+  valueKey: string,
+  labelKey: string,
+  className?: string,
+  style?: Object,
+  renderMenuItem?: (itemLabel: React.Node, item: Object) => React.Node,
+  renderMenuGroup?: (title: React.Node, item: Object) => React.Node,
+  onSelect?: (value: any, checked: boolean, item: Object, event: DefaultEvent) => void,
+  onGroupTitleClick?: DefaultEventFunction,
+}
 
-  static propTypes = {
-    classPrefix: PropTypes.string,
-    data: PropTypes.array,
-    group: PropTypes.bool,
-    disabledItemValues: PropTypes.array,
-    activeItemValues: PropTypes.any,
-    focusItemValue: PropTypes.any,
-    height: PropTypes.number,
-    valueKey: PropTypes.string,
-    labelKey: PropTypes.string,
-    renderMenuItem: PropTypes.func,
-    renderMenuGroup: PropTypes.func,
-    onSelect: PropTypes.func,
-    onGroupTitleClick: PropTypes.func,
-  };
+
+class DropdownMenu extends React.Component<Props> {
 
   static defaultProps = {
     classPrefix: `${namespace}-check-menu-items`,
     data: [],
+    activeItemValues: [],
     disabledItemValues: [],
-    height: 320,
+    maxHeight: 320,
     valueKey: 'value',
     labelKey: 'label'
   };
@@ -43,20 +50,18 @@ class DropdownMenu extends React.Component {
    */
   static handledProps = [];
 
-  constructor(props) {
-    super(props);
-    this.menuItems = {};
-  }
-
   componentDidMount() {
     this.updateScrollPoistion();
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: Props) {
     if (!_.isEqual(prevProps.focusItemValue, this.props.focusItemValue)) {
       this.updateScrollPoistion();
     }
   }
+
+  menuItems = {}
+  menuBodyContainer = {};
 
   updateScrollPoistion() {
     const activeItem = this.menuBodyContainer.querySelector(`.${namespace}-check-menu-item-focus`);
@@ -74,7 +79,8 @@ class DropdownMenu extends React.Component {
 
   }
 
-  handleSelect = (value, checked, item, event) => {
+  // value: any, item: Object, event: DefaultEvent
+  handleSelect = (value: any, checked: boolean, item: Object, event: DefaultEvent) => {
     const { onSelect } = this.props;
     onSelect && onSelect(value, checked, item, event);
   }
@@ -165,7 +171,7 @@ class DropdownMenu extends React.Component {
   render() {
 
     const {
-      height,
+      maxHeight,
       className,
       style,
       classPrefix,
@@ -184,7 +190,7 @@ class DropdownMenu extends React.Component {
         }}
         style={{
           ...style,
-          maxHeight: height,
+          maxHeight,
         }}
       >
         <ul>

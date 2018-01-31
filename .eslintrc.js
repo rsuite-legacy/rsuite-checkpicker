@@ -18,7 +18,9 @@ module.exports = {
   'parser': 'babel-eslint',
   'plugins': [
     'react',
-    'babel'
+    'babel',
+    'json',
+    'flowtype'
   ],
   'parserOptions': {
     'ecmaVersion': 6,
@@ -67,7 +69,17 @@ module.exports = {
     'react/jsx-filename-extension': OFF,
     'react/prefer-stateless-function': OFF,
     'react/require-default-props': OFF,
-    'react/forbid-prop-types': OFF
 
+    /**
+     * Flowtype
+     */
+    'flowtype/define-flow-type': 'error',
+    'flowtype/require-valid-file-annotation': 'off',
+    'flowtype/require-parameter-type': 'off',
+    'flowtype/require-return-type': 'off',
+    'flowtype/space-after-type-colon': 'off',
+    'flowtype/space-before-type-colon': 'off',
+    'flowtype/type-id-match': 'off',
+    'flowtype/use-flow-type': 'error'
   }
 };

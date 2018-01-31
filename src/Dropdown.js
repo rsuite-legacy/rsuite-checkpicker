@@ -1,5 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+// @flow
+
+import * as React from 'react';
 import classNames from 'classnames';
 import _ from 'lodash';
 import { IntlProvider, FormattedMessage } from 'rsuite-intl';
@@ -25,48 +26,64 @@ import defaultLocale from './locale';
 
 const { namespace } = constants;
 
-class Dropdown extends React.Component {
-  static propTypes = {
-    classPrefix: PropTypes.string,
-    data: PropTypes.array,
-    disabled: PropTypes.bool,
-    disabledItemValues: PropTypes.array,
-    height: PropTypes.number,
-    valueKey: PropTypes.string,
-    labelKey: PropTypes.string,
-    value: PropTypes.array,
-    defaultValue: PropTypes.array,
-    renderMenuItem: PropTypes.func,
-    renderMenuGroup: PropTypes.func,
-    renderExtraFooter: PropTypes.func,
-    renderValue: PropTypes.func,
-    onChange: PropTypes.func,
-    onSelect: PropTypes.func,
-    onGroupTitleClick: PropTypes.func,
-    onSearch: PropTypes.func,
-    onOpen: PropTypes.func,
-    onClose: PropTypes.func,
-    /**
-     * group by key in `data`
-     */
-    groupBy: PropTypes.any,
-    placeholder: PropTypes.node,
-    locale: PropTypes.object,
-    searchable: PropTypes.bool,
-    cleanable: PropTypes.bool,
-    open: PropTypes.bool,
-    defaultOpen: PropTypes.bool,
-    placement: PropTypes.oneOf([
-      'bottomLeft', 'bottomRight', 'topLeft', 'topRight',
-      'leftTop', 'rightTop', 'leftBottom', 'rightBottom'
-    ])
-  };
+type DefaultEvent = SyntheticEvent<*>;
+type DefaultEventFunction = (event: DefaultEvent) => void;
+type PlacementEighPoints = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight' | 'leftTop' | 'rightTop' | 'leftBottom' | 'rightBottom';
+type Props = {
+  data: Array<any>,
+  locale: Object,
+  classPrefix?: string,
+  className?: string,
+  disabled?: boolean,
+  disabledItemValues?: Array<any>,
+  maxHeight?: number,
+  valueKey?: string,
+  labelKey?: string,
+  value?: Array<any>,
+  defaultValue?: Array<any>,
+  renderMenuItem?: (itemLabel: React.Node, item: Object) => React.Node,
+  renderMenuGroup?: (title: React.Node, item: Object) => React.Node,
+  renderValue?: (value: Array<any>, items: Array<any>) => React.Node,
+  renderExtraFooter?: () => React.Node,
+  onChange?: (value: Array<any>, event: DefaultEvent) => void,
+  onSelect?: (value: any, item: Object, event: DefaultEvent) => void,
+  onGroupTitleClick?: DefaultEventFunction,
+  onSearch?: (searchKeyword: string, event: DefaultEvent) => void,
+  onOpen?: () => void,
+  onClose?: () => void,
+  /**
+   * group by key in `data`
+   */
+  groupBy?: any,
+  placeholder?: React.Node,
+  searchable?: boolean,
+  cleanable?: boolean,
+  open?: boolean,
+  defaultOpen?: boolean,
+
+  /**
+   * 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight' |
+   * 'leftTop' | 'rightTop' | 'leftBottom' | 'rightBottom'
+   */
+  placement?: PlacementEighPoints
+};
+
+type States = {
+  value?: Array<any>,
+  // Used to focus the active item  when trigger `onKeydown`
+  focusItemValue?: Array<any>,
+  searchKeyword: string,
+  filteredData?: Array<any>
+}
+
+
+class Dropdown extends React.Component<Props, States> {
 
   static defaultProps = {
     classPrefix: `${namespace}-check`,
     data: [],
     disabledItemValues: [],
-    height: 320,
+    maxHeight: 320,
     valueKey: 'value',
     labelKey: 'label',
     locale: defaultLocale,
@@ -75,8 +92,7 @@ class Dropdown extends React.Component {
     placement: 'bottomLeft'
   };
 
-
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     const {
       data,
@@ -102,7 +118,7 @@ class Dropdown extends React.Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Props) {
     const { value, data } = nextProps;
     if (
       !_.isEqual(value, this.props.value) ||
@@ -116,14 +132,13 @@ class Dropdown extends React.Component {
     }
   }
 
-
   getFocusableMenuItems = () => {
     const { labelKey } = this.props;
-    const { menuItems = {} } = this.menuContainer;
+    const { menuItems } = this.menuContainer;
     if (!menuItems) {
       return [];
     }
-    const items = Object.values(menuItems).map(item => item.props.getItemData());
+    const items = Object.values(menuItems).map((item: any) => item.props.getItemData());
 
     return filterNodesOfTree(items,
       item => this.shouldDisplay(item[labelKey])
@@ -136,11 +151,15 @@ class Dropdown extends React.Component {
     return _.clone(nextValue) || [];
   }
 
+  menuContainer = {
+    menuItems: null
+  }
+
   /**
    * Index of keyword  in `label`
    * @param {node} label
    */
-  shouldDisplay(label) {
+  shouldDisplay(label: any) {
 
     const { searchKeyword } = this.state;
     if (!_.trim(searchKeyword)) {
@@ -158,7 +177,7 @@ class Dropdown extends React.Component {
     return false;
   }
 
-  findNode(focus) {
+  findNode(focus: Function) {
     const items = this.getFocusableMenuItems();
     const { valueKey } = this.props;
     const { focusItemValue } = this.state;
@@ -191,10 +210,14 @@ class Dropdown extends React.Component {
     });
   }
 
-  selectFocusMenuItem(event) {
+  selectFocusMenuItem(event: DefaultEvent) {
     const { onChange } = this.props;
     const value = this.getValue();
     const { focusItemValue } = this.state;
+
+    if (!focusItemValue) {
+      return;
+    }
 
     if (!value.some(v => _.isEqual(v, focusItemValue))) {
       value.push(focusItemValue);
@@ -208,7 +231,7 @@ class Dropdown extends React.Component {
     });
   }
 
-  handleKeyDown = (event) => {
+  handleKeyDown = (event: SyntheticKeyboardEvent<*>) => {
 
     if (!this.menuContainer) {
       return;
@@ -217,12 +240,12 @@ class Dropdown extends React.Component {
     switch (event.keyCode) {
       // down
       case 40:
-        this.focusNextMenuItem(event);
+        this.focusNextMenuItem();
         event.preventDefault();
         break;
       // up
       case 38:
-        this.focusPrevMenuItem(event);
+        this.focusPrevMenuItem();
         event.preventDefault();
         break;
       // enter
@@ -233,38 +256,42 @@ class Dropdown extends React.Component {
       // esc | tab
       case 27:
       case 9:
-        this.closeDropdown(event);
+        this.closeDropdown();
         event.preventDefault();
         break;
       default:
     }
   }
 
-  handleSelect = (val, checked, item, event) => {
+  handleSelect = (nextValue: any, checked: boolean, item: Object, event: DefaultEvent) => {
     const { onChange, onSelect } = this.props;
     const value = this.getValue();
 
     if (checked) {
-      value.push(val);
+      value.push(nextValue);
     } else {
-      _.remove(value, itemVal => _.isEqual(itemVal, val));
+      _.remove(value, itemVal => _.isEqual(itemVal, nextValue));
     }
 
     this.setState({
       value,
-      focusItemValue: val
+      focusItemValue: nextValue
     }, () => {
       onSelect && onSelect(value, item, event);
       onChange && onChange(value, event);
     });
   }
 
-
-  handleSearch = (searchKeyword, event) => {
+  handleSearch = (searchKeyword: string, event: DefaultEvent) => {
     const { onSearch } = this.props;
-    this.setState({ searchKeyword });
+    this.setState({
+      searchKeyword,
+      focusItemValue: undefined
+    });
     onSearch && onSearch(searchKeyword, event);
   }
+
+  trigger = null;
 
   closeDropdown = () => {
     const value = this.getValue();
@@ -276,7 +303,7 @@ class Dropdown extends React.Component {
     });
   }
 
-  handleClean = (event) => {
+  handleClean = (event: DefaultEvent) => {
     const { disabled, onChange } = this.props;
     if (disabled) {
       return;
@@ -295,7 +322,9 @@ class Dropdown extends React.Component {
     });
   }
 
-  addPrefix = name => prefix(this.props.classPrefix)(name)
+  addPrefix = (name: string) => prefix(this.props.classPrefix)(name)
+
+  container = null;
 
   renderDropdownMenu() {
     const {

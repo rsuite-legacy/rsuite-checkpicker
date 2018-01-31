@@ -1,24 +1,30 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+// @flow
+
+import * as React from 'react';
 import classNames from 'classnames';
 import { toggleClass } from 'dom-lib';
 import { getUnhandledProps, prefix } from 'rsuite-utils/lib/utils';
 import { namespace } from 'rsuite-utils/lib/Picker/constants';
 
+type Props = {
+  title: React.Node,
+  classPrefix: string,
+  className?: string,
+  children?: React.Node,
+  onClick?: (event: SyntheticEvent<*>) => void
+}
 
-class DropdownMenuGroup extends React.Component {
 
-  static propTypes = {
-    title: PropTypes.node.isRequired,
-    onClick: PropTypes.func,
-    classPrefix: PropTypes.string
-  };
+class DropdownMenuGroup extends React.Component<Props> {
+
 
   static defaultProps = {
     classPrefix: `${namespace}-check-menu-group`,
   };
 
-  handleClickGroup = (event) => {
+  DropdownMenuGroup = null;
+
+  handleClickGroup = (event: SyntheticEvent<*>) => {
     const { onClick, classPrefix } = this.props;
     toggleClass(this.DropdownMenuGroup, `${classPrefix}-closed`);
     onClick && onClick(event);

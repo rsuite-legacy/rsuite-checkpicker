@@ -6,6 +6,7 @@
   ],
   "plugins": [
     "lodash",
+    "flow-react-proptypes",
     "transform-class-properties",
     "transform-react-flow-handled-props"
   ],

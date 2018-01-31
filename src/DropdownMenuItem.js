@@ -1,29 +1,31 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+// @flow
+
+import * as React from 'react';
 import classNames from 'classnames';
 import { getUnhandledProps, prefix } from 'rsuite-utils/lib/utils';
 import { namespace } from 'rsuite-utils/lib/Picker/constants';
 
+type Props = {
+  classPrefix?: string,
+  active?: boolean,
+  disabled?: boolean,
+  value?: any,
+  onSelect?: (value: any, checked: boolean, event: SyntheticEvent<*>) => void,
+  onKeyDown?: (event: SyntheticKeyboardEvent<*>) => void,
+  focus?: boolean,
+  title?: string,
+  className?: string,
+  children: ?React.Node,
+  getItemData?: () => any
+};
 
-class DropdownMenuItem extends React.Component {
-
-  static propTypes = {
-    classPrefix: PropTypes.string,
-    active: PropTypes.bool,
-    disabled: PropTypes.bool,
-    value: PropTypes.any,
-    onSelect: PropTypes.func,
-    onKeyDown: PropTypes.func,
-    focus: PropTypes.bool,
-    title: PropTypes.string,
-    getItemData: PropTypes.func
-  };
+class DropdownMenuItem extends React.Component<Props> {
 
   static defaultProps = {
     classPrefix: `${namespace}-check-menu-item`,
   };
 
-  handleChange = (event) => {
+  handleChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
     const { value, disabled, onSelect } = this.props;
     if (!disabled && onSelect) {
       onSelect(value, event.target.checked, event);
