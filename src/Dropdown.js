@@ -411,10 +411,10 @@ class Dropdown extends React.Component<Props, States> {
 
     const unhandled = getUnhandledProps(Dropdown, rest);
     const value = this.getValue();
-    const hasValue = !!value;
+    const hasValue = !!value && !!value.length;
 
     let selectedLabel = (value && value.length) ? `${value.length} selected` : placeholder;
-    if (renderValue) {
+    if (renderValue && hasValue) {
       selectedLabel = renderValue(
         value,
         data.filter(item => value.some(val => _.eq(item[valueKey], val)))
@@ -454,7 +454,7 @@ class Dropdown extends React.Component<Props, States> {
             <Toggle
               onClean={this.handleClean}
               cleanable={cleanable && !disabled}
-              hasValue={!!value && !!value.length}
+              hasValue={hasValue}
             >
               {selectedLabel || <FormattedMessage id="placeholder" />}
             </Toggle>
