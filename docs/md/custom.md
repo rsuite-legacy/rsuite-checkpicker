@@ -8,7 +8,7 @@ class CustomExample extends React.Component {
       <div className="example-item">
         <CheckPicker
           data={data}
-          defaultValue={['Julius']}
+          placeholder="Select User"
           groupBy="role"
           renderMenuItem={(label, item) => {
             return <span><i className="icon icon-user" /> {label}</span>;
@@ -20,13 +20,10 @@ class CustomExample extends React.Component {
               </span>
             );
           }}
-          renderValue={(value, checkedItems, placeholder) => {
-            if (!value.length) {
-              return placeholder;
-            }
+          renderValue={(value, checkedItems) => {
             return (
               <span>
-                <i className="icon icon-user" /> {value.join(' , ')}
+                <i className="icon icon-user" /> User :  {value.join(' , ')}
               </span>
             );
           }}
