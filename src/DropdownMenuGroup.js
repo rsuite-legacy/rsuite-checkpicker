@@ -12,14 +12,11 @@ type Props = {
   className?: string,
   children?: React.Node,
   onClick?: (event: SyntheticEvent<*>) => void
-}
-
+};
 
 class DropdownMenuGroup extends React.Component<Props> {
-
-
   static defaultProps = {
-    classPrefix: `${namespace}-check-menu-group`,
+    classPrefix: `${namespace}-check-menu-group`
   };
 
   DropdownMenuGroup = null;
@@ -28,10 +25,9 @@ class DropdownMenuGroup extends React.Component<Props> {
     const { onClick, classPrefix } = this.props;
     toggleClass(this.DropdownMenuGroup, `${classPrefix}-closed`);
     onClick && onClick(event);
-  }
+  };
 
   render() {
-
     const { title, children, classPrefix, className, ...rest } = this.props;
 
     const addPrefix = prefix(classPrefix);
@@ -42,7 +38,7 @@ class DropdownMenuGroup extends React.Component<Props> {
       <li
         {...unhandled}
         className={classes}
-        ref={(ref) => {
+        ref={ref => {
           this.DropdownMenuGroup = ref;
         }}
       >
@@ -55,9 +51,7 @@ class DropdownMenuGroup extends React.Component<Props> {
           <span>{title}</span>
           <span className={addPrefix('caret')} />
         </div>
-        <ul className={addPrefix('children')}>
-          {children}
-        </ul>
+        <ul className={addPrefix('children')}>{children}</ul>
       </li>
     );
   }

@@ -28,12 +28,10 @@ type Props = {
   renderMenuItem?: (itemLabel: React.Node, item: Object) => React.Node,
   renderMenuGroup?: (title: React.Node, item: Object) => React.Node,
   onSelect?: (value: any, checked: boolean, item: Object, event: DefaultEvent) => void,
-  onGroupTitleClick?: DefaultEventFunction,
-}
-
+  onGroupTitleClick?: DefaultEventFunction
+};
 
 class DropdownMenu extends React.Component<Props> {
-
   static defaultProps = {
     classPrefix: `${namespace}-check-menu-items`,
     data: [],
@@ -60,7 +58,7 @@ class DropdownMenu extends React.Component<Props> {
     }
   }
 
-  menuItems = {}
+  menuItems = {};
   menuBodyContainer = {};
 
   updateScrollPoistion() {
@@ -73,20 +71,18 @@ class DropdownMenu extends React.Component<Props> {
     const sHeight = getHeight(this.menuBodyContainer);
     if (sTop > position.top) {
       scrollTop(this.menuBodyContainer, Math.max(0, position.top - 20));
-    } else if (position.top > (sTop + sHeight)) {
-      scrollTop(this.menuBodyContainer, Math.max(0, (position.top - sHeight) + 32));
+    } else if (position.top > sTop + sHeight) {
+      scrollTop(this.menuBodyContainer, Math.max(0, position.top - sHeight + 32));
     }
-
   }
 
   // value: any, item: Object, event: DefaultEvent
   handleSelect = (value: any, checked: boolean, item: Object, event: DefaultEvent) => {
     const { onSelect } = this.props;
     onSelect && onSelect(value, checked, item, event);
-  }
+  };
 
   renderItems() {
-
     const {
       activeItemValues,
       focusItemValue,
@@ -100,8 +96,7 @@ class DropdownMenu extends React.Component<Props> {
       group
     } = this.props;
 
-    const createMenuItems = (items = [], groupId = 0) => (
-
+    const createMenuItems = (items = [], groupId = 0) =>
       items.map((item, index) => {
         const value = item[valueKey];
         const label = item[labelKey];
@@ -121,11 +116,7 @@ class DropdownMenu extends React.Component<Props> {
           return (
             <DropdownMenuGroup
               key={onlyKey}
-              title={
-                renderMenuGroup ?
-                  renderMenuGroup(item.groupTitle, item) :
-                  item.groupTitle
-              }
+              title={renderMenuGroup ? renderMenuGroup(item.groupTitle, item) : item.groupTitle}
               onClick={onGroupTitleClick}
             >
               {createMenuItems(item.children, onlyKey)}
@@ -135,9 +126,7 @@ class DropdownMenu extends React.Component<Props> {
           throw Error(`valueKey "${valueKey}" is not defined in "data" : ${index} `);
         }
 
-        const disabled = disabledItemValues.some(disabledValue => (
-          _.isEqual(disabledValue, value)
-        ));
+        const disabled = disabledItemValues.some(disabledValue => _.isEqual(disabledValue, value));
 
         return (
           <DropdownMenuItem
@@ -145,12 +134,11 @@ class DropdownMenu extends React.Component<Props> {
             key={`${groupId}-${onlyKey}`}
             disabled={disabled}
             active={
-              !_.isUndefined(activeItemValues) &&
-              activeItemValues.some(v => _.isEqual(v, value))
+              !_.isUndefined(activeItemValues) && activeItemValues.some(v => _.isEqual(v, value))
             }
             focus={!_.isUndefined(focusItemValue) && _.eq(focusItemValue, value)}
             value={value}
-            ref={(ref) => {
+            ref={ref => {
               if (ref && !disabled) {
                 this.menuItems[`${groupId}-${onlyKey}`] = ref;
               }
@@ -162,21 +150,13 @@ class DropdownMenu extends React.Component<Props> {
             {renderMenuItem ? renderMenuItem(label, item) : label}
           </DropdownMenuItem>
         );
-      })
-    );
+      });
 
     return createMenuItems(data);
   }
 
   render() {
-
-    const {
-      maxHeight,
-      className,
-      style,
-      classPrefix,
-      ...rest
-    } = this.props;
+    const { maxHeight, className, style, classPrefix, ...rest } = this.props;
 
     const classes = classNames(classPrefix, className);
     const unhandled = getUnhandledProps(DropdownMenu, rest);
@@ -185,17 +165,15 @@ class DropdownMenu extends React.Component<Props> {
       <div
         {...unhandled}
         className={classes}
-        ref={(ref) => {
+        ref={ref => {
           this.menuBodyContainer = ref;
         }}
         style={{
           ...style,
-          maxHeight,
+          maxHeight
         }}
       >
-        <ul>
-          {this.renderItems()}
-        </ul>
+        <ul>{this.renderItems()}</ul>
       </div>
     );
   }

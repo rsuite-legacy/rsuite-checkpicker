@@ -20,9 +20,8 @@ type Props = {
 };
 
 class DropdownMenuItem extends React.Component<Props> {
-
   static defaultProps = {
-    classPrefix: `${namespace}-check-menu-item`,
+    classPrefix: `${namespace}-check-menu-item`
   };
 
   handleChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
@@ -30,10 +29,9 @@ class DropdownMenuItem extends React.Component<Props> {
     if (!disabled && onSelect) {
       onSelect(value, event.target.checked, event);
     }
-  }
+  };
 
   render() {
-
     const {
       active,
       onKeyDown,
@@ -54,28 +52,15 @@ class DropdownMenuItem extends React.Component<Props> {
 
     const unhandled = getUnhandledProps(DropdownMenuItem, rest);
     const input = (
-      <span
-        className={addPrefix('wrapper')}
-      >
-        <input
-          checked={active}
-          type="checkbox"
-          disabled={disabled}
-          onChange={this.handleChange}
-        />
+      <span className={addPrefix('wrapper')}>
+        <input checked={active} type="checkbox" disabled={disabled} onChange={this.handleChange} />
         <span className={addPrefix('inner')} />
       </span>
     );
 
     return (
-      <li
-        {...unhandled}
-        className={className}
-        role="menuitem"
-      >
-        <div
-          className={addPrefix('checker')}
-        >
+      <li {...unhandled} className={className} role="menuitem">
+        <div className={addPrefix('checker')}>
           <label
             className={classes}
             tabIndex={-1}
