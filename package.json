@@ -3,8 +3,7 @@
   "version": "3.0.0",
   "description": "A react component for replacing default select and dropdown.",
   "scripts": {
-    "dev":
-      "NODE_ENV=development webpack-dev-server  --inline --progress --colors --port 3100 --host 0.0.0.0 ",
+    "dev": "NODE_ENV=development webpack-dev-server  --inline --progress --colors --port 3100 --host 0.0.0.0 ",
     "docs": "rm -rf assets &&  NODE_ENV=production webpack ",
     "build": "rm -rf lib && babel src --out-dir lib && cp -R src/less lib",
     "tdd": "karma start",
@@ -17,8 +16,19 @@
   "main": "lib/index.js",
   "author": "Simon Guo <simonguo.2009@gmail.com>",
   "license": "MIT",
-  "keywords": ["picker", "select", "check", "dropdown", "react", "rsuite"],
-  "files": ["CHANGELOG.md", "lib", "src"],
+  "keywords": [
+    "picker",
+    "select",
+    "check",
+    "dropdown",
+    "react",
+    "rsuite"
+  ],
+  "files": [
+    "CHANGELOG.md",
+    "lib",
+    "src"
+  ],
   "repository": {
     "type": "git",
     "url": "git@github.com:rsuite/rsuite-checkpicker.git"
@@ -31,9 +41,9 @@
     "rsuite-intl": "^1.0.3"
   },
   "peerDependencies": {
-    "rsuite-utils": "^1.0.0",
     "react": "^0.14.9 || >=15.3.0",
-    "react-dom": "^0.14.9 || >=15.3.0"
+    "react-dom": "^0.14.9 || >=15.3.0",
+    "rsuite-utils": "^1.0.0"
   },
   "devDependencies": {
     "babel-core": "^6.7.6",
@@ -55,9 +65,9 @@
     "enzyme": "^3.1.0",
     "enzyme-adapter-react-15": "^1.0.3",
     "eslint": "^3.19.0",
-    "eslint-plugin-flowtype": "^2.42.0",
     "eslint-config-airbnb": "^15.0.1",
     "eslint-plugin-babel": "^4.1.1",
+    "eslint-plugin-flowtype": "^2.42.0",
     "eslint-plugin-import": "^2.6.1",
     "eslint-plugin-json": "^1.2.0",
     "eslint-plugin-jsx-a11y": "^6.0.2",
@@ -90,7 +100,7 @@
     "rsuite": "^2.0.12",
     "rsuite-docs": "^0.2.2",
     "rsuite-theme": "^1.0.1",
-    "rsuite-utils": "^1.0.0",
+    "rsuite-utils": "^1.0.1",
     "sinon": "^4.0.2",
     "sinon-chai": "^2.8.0",
     "style-loader": "^0.13.1",

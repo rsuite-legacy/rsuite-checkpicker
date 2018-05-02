@@ -36,6 +36,7 @@ type Props = {
   locale: Object,
   classPrefix?: string,
   className?: string,
+  menuClassName?: string,
   disabled?: boolean,
   disabledItemValues?: Array<any>,
   maxHeight?: number,
@@ -139,10 +140,6 @@ class Dropdown extends React.Component<Props, States> {
     const nextValue = _.isUndefined(value) ? this.state.value : value;
     return _.clone(nextValue) || [];
   }
-
-  menuContainer = {
-    menuItems: null
-  };
 
   /**
    * Index of keyword  in `label`
@@ -285,8 +282,6 @@ class Dropdown extends React.Component<Props, States> {
     onSearch && onSearch(searchKeyword, event);
   };
 
-  trigger = null;
-
   closeDropdown = () => {
     const value = this.getValue();
     if (this.trigger) {
@@ -320,6 +315,24 @@ class Dropdown extends React.Component<Props, States> {
 
   container = null;
 
+  bindContainerRef = (ref: React.ElementRef<*>) => {
+    this.container = ref;
+  };
+
+  trigger = null;
+
+  bindTriggerRef = (ref: React.ElementRef<*>) => {
+    this.trigger = ref;
+  };
+
+  menuContainer = {
+    menuItems: null
+  };
+
+  bindMenuContainerRef = (ref: React.ElementRef<*>) => {
+    this.menuContainer = ref;
+  };
+
   renderDropdownMenu() {
     const {
       data,
@@ -329,13 +342,15 @@ class Dropdown extends React.Component<Props, States> {
       renderExtraFooter,
       locale,
       placement,
-      renderMenu
+      renderMenu,
+      menuClassName
     } = this.props;
 
     const { focusItemValue } = this.state;
 
     const classes = classNames(
       this.addPrefix('menu'),
+      menuClassName,
       `${namespace}-placement-${_.kebabCase(placement)}`
     );
 
@@ -354,9 +369,7 @@ class Dropdown extends React.Component<Props, States> {
     const menu = (
       <DropdownMenu
         {...menuProps}
-        ref={ref => {
-          this.menuContainer = ref;
-        }}
+        ref={this.bindMenuContainerRef}
         activeItemValues={this.getValue()}
         focusItemValue={focusItemValue}
         data={filteredData}
@@ -430,14 +443,10 @@ class Dropdown extends React.Component<Props, States> {
           onKeyDown={this.handleKeyDown}
           tabIndex={-1}
           role="menu"
-          ref={ref => {
-            this.container = ref;
-          }}
+          ref={this.bindContainerRef}
         >
           <OverlayTrigger
-            ref={ref => {
-              this.trigger = ref;
-            }}
+            ref={this.bindTriggerRef}
             open={open}
             defaultOpen={defaultOpen}
             disabled={disabled}

@@ -1,4 +1,3 @@
-# v1.0.0-alpha
+# 3.0.1
 
-- 从 rsuite-picker 拆分
-- 升级 React 版本 15.* ,同时兼容 0.14.9 版本
+* Added new property `menuClassName`
