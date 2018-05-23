@@ -363,7 +363,9 @@ class Dropdown extends React.Component<Props, States> {
 
     const menuProps = _.pick(
       this.props,
-      DropdownMenu.handledProps.filter(name => name !== 'classPrefix')
+      DropdownMenu.handledProps.filter(
+        name => !['className', 'style', 'classPrefix'].some(item => item === name)
+      )
     );
 
     const menu = (
