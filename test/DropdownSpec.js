@@ -196,6 +196,20 @@ describe('Dropdown', () => {
     ReactTestUtils.Simulate.keyDown(instanceDOM, { keyCode: 13 });
   });
 
+  it('Should call `onSelect` by keyCode=13 ', done => {
+    const doneOp = (value, item) => {
+      if (value.length === 2 && item.value === 'Louisa') {
+        done();
+      }
+    };
+    const instance = ReactTestUtils.renderIntoDocument(
+      <Dropdown defaultOpen data={data} onSelect={doneOp} defaultValue={['Kariane']} />
+    );
+    const instanceDOM = findDOMNode(instance);
+    ReactTestUtils.Simulate.keyDown(instanceDOM, { keyCode: 40 });
+    ReactTestUtils.Simulate.keyDown(instanceDOM, { keyCode: 13 });
+  });
+
   it('Should have a custom className', () => {
     const instance = ReactTestUtils.renderIntoDocument(<Dropdown className="custom" defaultOpen />);
     assert.include(findDOMNode(instance).className, 'custom');

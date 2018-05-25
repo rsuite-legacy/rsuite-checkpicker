@@ -201,8 +201,8 @@ class Dropdown extends React.Component<Props, States> {
   }
 
   selectFocusMenuItem(event: DefaultEvent) {
-    const { onChange } = this.props;
     const value = this.getValue();
+    const { data, valueKey } = this.props;
     const { focusItemValue } = this.state;
 
     if (!focusItemValue) {
@@ -215,8 +215,11 @@ class Dropdown extends React.Component<Props, States> {
       _.remove(value, itemVal => _.isEqual(itemVal, focusItemValue));
     }
 
+    const focusItem: any = data.find(item => _.isEqual(_.get(item, valueKey), focusItemValue));
+
     this.setState({ value }, () => {
-      onChange && onChange(value, event);
+      this.handleSelect(value, focusItem, event);
+      this.handleChangeValue(value, event);
     });
   }
 
@@ -251,8 +254,7 @@ class Dropdown extends React.Component<Props, States> {
     }
   };
 
-  handleSelect = (nextValue: any, checked: boolean, item: Object, event: DefaultEvent) => {
-    const { onChange, onSelect } = this.props;
+  handleItemSelect = (nextValue: any, checked: boolean, item: Object, event: DefaultEvent) => {
     const value = this.getValue();
 
     if (checked) {
@@ -261,16 +263,25 @@ class Dropdown extends React.Component<Props, States> {
       _.remove(value, itemVal => _.isEqual(itemVal, nextValue));
     }
 
-    this.setState(
-      {
-        value,
-        focusItemValue: nextValue
-      },
-      () => {
-        onSelect && onSelect(value, item, event);
-        onChange && onChange(value, event);
-      }
-    );
+    const nextState = {
+      value,
+      focusItemValue: nextValue
+    };
+
+    this.setState(nextState, () => {
+      this.handleSelect(value, item, event);
+      this.handleChangeValue(value, event);
+    });
+  };
+
+  handleSelect = (nextValue: any, item: Object, event: DefaultEvent) => {
+    const { onSelect } = this.props;
+    onSelect && onSelect(nextValue, item, event);
+  };
+
+  handleChangeValue = (value: any, event: DefaultEvent) => {
+    const { onChange } = this.props;
+    onChange && onChange(value, event);
   };
 
   handleSearch = (searchKeyword: string, event: DefaultEvent) => {
@@ -293,12 +304,12 @@ class Dropdown extends React.Component<Props, States> {
   };
 
   handleClean = (event: DefaultEvent) => {
-    const { disabled, onChange } = this.props;
+    const { disabled } = this.props;
     if (disabled) {
       return;
     }
     this.setState({ value: [] }, () => {
-      onChange && onChange([], event);
+      this.handleChangeValue([], event);
     });
   };
 
@@ -376,7 +387,7 @@ class Dropdown extends React.Component<Props, States> {
         focusItemValue={focusItemValue}
         data={filteredData}
         group={!_.isUndefined(groupBy)}
-        onSelect={this.handleSelect}
+        onSelect={this.handleItemSelect}
       />
     );
 
