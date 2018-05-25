@@ -417,14 +417,15 @@ class Dropdown extends React.Component<Props, States> {
 
     const unhandled = getUnhandledProps(Dropdown, rest);
     const value = this.getValue();
-    const hasValue = !!value && !!value.length;
+    const selectedItems =
+      !!value && !!value.length
+        ? data.filter(item => value.some(val => _.eq(item[valueKey], val)))
+        : [];
+    const hasValue = !!selectedItems.length;
 
-    let selectedLabel = value && value.length ? `${value.length} selected` : placeholder;
+    let selectedLabel = hasValue ? `${selectedItems.length} selected` : placeholder;
     if (renderValue && hasValue) {
-      selectedLabel = renderValue(
-        value,
-        data.filter(item => value.some(val => _.eq(item[valueKey], val)))
-      );
+      selectedLabel = renderValue(value, selectedItems);
     }
 
     const classes = classNames(

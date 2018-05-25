@@ -107,7 +107,6 @@ describe('Dropdown', () => {
   it('Should render value by `renderValue`', () => {
     const instance = ReactTestUtils.renderIntoDocument(
       <Dropdown
-        className="custom"
         placeholder="test"
         data={[{ label: '1', value: '1' }, { label: '2', value: '2' }]}
         value={['1', '2']}
@@ -116,6 +115,18 @@ describe('Dropdown', () => {
     );
     const instanceDom = findDOMNode(instance);
     assert.equal(instanceDom.querySelector(valueClassName).innerText, '1,2');
+  });
+
+  it('Should render a placeholder when value error', () => {
+    const instance = ReactTestUtils.renderIntoDocument(
+      <Dropdown
+        placeholder="test"
+        data={[{ label: '1', value: '1' }, { label: '2', value: '2' }]}
+        value={['4']}
+      />
+    );
+    const instanceDom = findDOMNode(instance);
+    assert.equal(instanceDom.querySelector(placeholderClassName).innerText, 'test');
   });
 
   it('Should call `onChange` callback', done => {
