@@ -41,3 +41,4 @@ lib
 .tern-project
 assets
 yarn.lock
+package-lock.json
