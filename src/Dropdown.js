@@ -36,6 +36,8 @@ type Props = {
   locale: Object,
   classPrefix?: string,
   className?: string,
+  block?: boolean,
+  toggleComponentClass?: React.ElementType,
   menuClassName?: string,
   disabled?: boolean,
   disabledItemValues?: Array<any>,
@@ -69,7 +71,8 @@ type Props = {
    * 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight' |
    * 'leftTop' | 'rightTop' | 'leftBottom' | 'rightBottom'
    */
-  placement?: PlacementEighPoints
+  placement?: PlacementEighPoints,
+  style?: Object
 };
 
 type States = {
@@ -423,6 +426,9 @@ class Dropdown extends React.Component<Props, States> {
       placement,
       open,
       defaultOpen,
+      toggleComponentClass,
+      block,
+      style,
       ...rest
     } = this.props;
 
@@ -444,6 +450,7 @@ class Dropdown extends React.Component<Props, States> {
       className,
       `${namespace}-placement-${_.kebabCase(placement)}`,
       {
+        [this.addPrefix('block')]: block,
         [this.addPrefix('has-value')]: hasValue,
         [this.addPrefix('disabled')]: disabled
       }
@@ -452,8 +459,8 @@ class Dropdown extends React.Component<Props, States> {
     return (
       <IntlProvider locale={locale}>
         <div
-          {...unhandled}
           className={classes}
+          style={style}
           onKeyDown={this.handleKeyDown}
           tabIndex={-1}
           role="menu"
@@ -471,6 +478,8 @@ class Dropdown extends React.Component<Props, States> {
             speaker={this.renderDropdownMenu()}
           >
             <Toggle
+              {...unhandled}
+              componentClass={toggleComponentClass}
               onClean={this.handleClean}
               cleanable={cleanable && !disabled}
               hasValue={hasValue}

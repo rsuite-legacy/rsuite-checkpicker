@@ -58,10 +58,21 @@ describe('Dropdown', () => {
     assert.ok(instanceDom.className.match(/\bpicker-check\b/));
   });
 
+  it('Should output a button', () => {
+    const instance = ReactTestUtils.renderIntoDocument(<Dropdown toggleComponentClass="button" />);
+    assert.ok(ReactTestUtils.findRenderedDOMComponentWithTag(instance, 'button'));
+  });
+
   it('Should be disabled', () => {
     const instance = ReactTestUtils.renderIntoDocument(<Dropdown disabled />);
     const instanceDom = findDOMNode(instance);
     assert.ok(instanceDom.className.match(/\bdisabled\b/));
+  });
+
+  it('Should be block', () => {
+    const instance = ReactTestUtils.renderIntoDocument(<Dropdown block />);
+    const instanceDom = findDOMNode(instance);
+    assert.ok(instanceDom.className.match(/\bblock\b/));
   });
 
   it('Should active item by `value`', () => {
