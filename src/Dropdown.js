@@ -10,7 +10,8 @@ import {
   filterNodesOfTree,
   getDataGroupBy,
   getUnhandledProps,
-  prefix
+  prefix,
+  createChainedFunction
 } from 'rsuite-utils/lib/utils';
 
 import { SearchBar, Toggle, MenuWrapper, constants } from 'rsuite-utils/lib/Picker';
@@ -22,7 +23,7 @@ const { namespace } = constants;
 
 type DefaultEvent = SyntheticEvent<*>;
 type DefaultEventFunction = (event: DefaultEvent) => void;
-type PlacementEighPoints =
+type Placement =
   | 'bottomLeft'
   | 'bottomRight'
   | 'topLeft'
@@ -30,12 +31,19 @@ type PlacementEighPoints =
   | 'leftTop'
   | 'rightTop'
   | 'leftBottom'
-  | 'rightBottom';
+  | 'rightBottom'
+  | 'auto'
+  | 'autoVerticalLeft'
+  | 'autoVerticalRight'
+  | 'autoHorizontalTop'
+  | 'autoHorizontalBottom';
 type Props = {
   data: Array<any>,
   locale: Object,
   classPrefix?: string,
   className?: string,
+  container?: HTMLElement | (() => HTMLElement),
+  containerPadding?: number,
   block?: boolean,
   toggleComponentClass?: React.ElementType,
   menuClassName?: string,
@@ -57,6 +65,12 @@ type Props = {
   onSearch?: (searchKeyword: string, event: DefaultEvent) => void,
   onOpen?: () => void,
   onClose?: () => void,
+  onEnter?: Function,
+  onEntering?: Function,
+  onEntered?: Function,
+  onExit?: Function,
+  onExiting?: Function,
+  onExited?: Function,
   /**
    * group by key in `data`
    */
@@ -66,12 +80,7 @@ type Props = {
   cleanable?: boolean,
   open?: boolean,
   defaultOpen?: boolean,
-
-  /**
-   * 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight' |
-   * 'leftTop' | 'rightTop' | 'leftBottom' | 'rightBottom'
-   */
-  placement?: PlacementEighPoints,
+  placement?: Placement,
   style?: Object
 };
 
@@ -325,6 +334,11 @@ class Dropdown extends React.Component<Props, States> {
     });
   };
 
+  handleOpen = () => {
+    const { onOpen } = this.props;
+    onOpen && onOpen();
+  };
+
   addPrefix = (name: string) => prefix(this.props.classPrefix)(name);
 
   container = null;
@@ -429,6 +443,14 @@ class Dropdown extends React.Component<Props, States> {
       toggleComponentClass,
       block,
       style,
+      container,
+      containerPadding,
+      onEnter,
+      onEntering,
+      onEntered,
+      onExit,
+      onExiting,
+      onExited,
       ...rest
     } = this.props;
 
@@ -473,9 +495,15 @@ class Dropdown extends React.Component<Props, States> {
             disabled={disabled}
             trigger="click"
             placement={placement}
-            onEntered={onOpen}
-            onExited={onClose}
+            onEnter={onEnter}
+            onEntering={onEntering}
+            onEntered={createChainedFunction(this.handleOpen, onEntered)}
+            onExit={onExit}
+            onExiting={onExiting}
+            onExited={createChainedFunction(this.handleExited, onExited)}
             speaker={this.renderDropdownMenu()}
+            container={container}
+            containerPadding={containerPadding}
           >
             <Toggle
               {...unhandled}
