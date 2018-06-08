@@ -101,7 +101,7 @@ class DropdownMenu extends React.Component<Props> {
         const value = item[valueKey];
         const label = item[labelKey];
 
-        if (!label && !item.groupTitle) {
+        if (_.isUndefined(label) && _.isUndefined(item.groupTitle)) {
           throw Error(`labelKey "${labelKey}" is not defined in "data" : ${index}`);
         }
 
