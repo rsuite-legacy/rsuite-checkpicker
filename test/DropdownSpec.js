@@ -232,4 +232,15 @@ describe('Dropdown', () => {
     const instance = ReactTestUtils.renderIntoDocument(<Dropdown style={{ fontSize }} />);
     assert.equal(findDOMNode(instance).style.fontSize, fontSize);
   });
+
+  it('Allow `label` to be an empty string', () => {
+    const instance = ReactTestUtils.renderIntoDocument(
+      <Dropdown placeholder="test" data={[{ label: '', value: '1' }]} value={['1']} defaultOpen />
+    );
+    const instanceDOM = findDOMNode(instance.menuContainer).querySelector(
+      '.rs-picker-check-menu-item-active'
+    );
+
+    assert.equal(instanceDOM.innerText, '');
+  });
 });
