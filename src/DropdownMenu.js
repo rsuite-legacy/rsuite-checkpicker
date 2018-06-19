@@ -5,7 +5,7 @@ import _ from 'lodash';
 import { getPosition, scrollTop, getHeight } from 'dom-lib';
 import classNames from 'classnames';
 
-import { getUnhandledProps } from 'rsuite-utils/lib/utils';
+import { getUnhandledProps, shallowEqual } from 'rsuite-utils/lib/utils';
 import { namespace } from 'rsuite-utils/lib/Picker/constants';
 
 import DropdownMenuGroup from './DropdownMenuGroup';
@@ -53,7 +53,7 @@ class DropdownMenu extends React.Component<Props> {
   }
 
   componentDidUpdate(prevProps: Props) {
-    if (!_.isEqual(prevProps.focusItemValue, this.props.focusItemValue)) {
+    if (!shallowEqual(prevProps.focusItemValue, this.props.focusItemValue)) {
       this.updateScrollPoistion();
     }
   }
@@ -126,7 +126,9 @@ class DropdownMenu extends React.Component<Props> {
           throw Error(`valueKey "${valueKey}" is not defined in "data" : ${index} `);
         }
 
-        const disabled = disabledItemValues.some(disabledValue => _.isEqual(disabledValue, value));
+        const disabled = disabledItemValues.some(disabledValue =>
+          shallowEqual(disabledValue, value)
+        );
 
         return (
           <DropdownMenuItem
@@ -134,9 +136,9 @@ class DropdownMenu extends React.Component<Props> {
             key={`${groupId}-${onlyKey}`}
             disabled={disabled}
             active={
-              !_.isUndefined(activeItemValues) && activeItemValues.some(v => _.isEqual(v, value))
+              !_.isUndefined(activeItemValues) && activeItemValues.some(v => shallowEqual(v, value))
             }
-            focus={!_.isUndefined(focusItemValue) && _.eq(focusItemValue, value)}
+            focus={!_.isUndefined(focusItemValue) && shallowEqual(focusItemValue, value)}
             value={value}
             ref={ref => {
               if (ref && !disabled) {
