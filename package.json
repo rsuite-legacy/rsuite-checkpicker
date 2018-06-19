@@ -100,7 +100,7 @@
     "rsuite": "^2.0.12",
     "rsuite-docs": "^0.2.2",
     "rsuite-theme": "^1.0.1",
-    "rsuite-utils": "^1.0.7",
+    "rsuite-utils": "^1.2.0",
     "sinon": "^4.0.2",
     "sinon-chai": "^2.8.0",
     "style-loader": "^0.13.1",

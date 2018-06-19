@@ -11,7 +11,9 @@ import {
   getDataGroupBy,
   getUnhandledProps,
   prefix,
-  createChainedFunction
+  createChainedFunction,
+  shallowEqual,
+  shallowEqualArray
 } from 'rsuite-utils/lib/utils';
 
 import { SearchBar, Toggle, MenuWrapper, constants } from 'rsuite-utils/lib/Picker';
@@ -87,7 +89,7 @@ type Props = {
 type States = {
   value?: Array<any>,
   // Used to focus the active item  when trigger `onKeydown`
-  focusItemValue?: Array<any>,
+  focusItemValue?: any,
   searchKeyword: string,
   filteredData?: Array<any>
 };
@@ -127,10 +129,15 @@ class Dropdown extends React.Component<Props, States> {
 
   componentWillReceiveProps(nextProps: Props) {
     const { value, data } = nextProps;
-    if (!_.isEqual(value, this.props.value) || !_.isEqual(data, this.props.data)) {
+
+    if (!shallowEqualArray(value, this.props.value)) {
       this.setState({
-        value,
-        focusItemValue: value,
+        value
+      });
+    }
+
+    if (!shallowEqualArray(data, this.props.data)) {
+      this.setState({
         filteredData: data
       });
     }
@@ -185,7 +192,7 @@ class Dropdown extends React.Component<Props, States> {
     const { focusItemValue } = this.state;
 
     for (let i = 0; i < items.length; i += 1) {
-      if (_.eq(focusItemValue, items[i][valueKey])) {
+      if (shallowEqual(focusItemValue, items[i][valueKey])) {
         focus(items, i);
         return;
       }
@@ -221,13 +228,13 @@ class Dropdown extends React.Component<Props, States> {
       return;
     }
 
-    if (!value.some(v => _.isEqual(v, focusItemValue))) {
+    if (!value.some(v => shallowEqual(v, focusItemValue))) {
       value.push(focusItemValue);
     } else {
-      _.remove(value, itemVal => _.isEqual(itemVal, focusItemValue));
+      _.remove(value, itemVal => shallowEqual(itemVal, focusItemValue));
     }
 
-    const focusItem: any = data.find(item => _.isEqual(_.get(item, valueKey), focusItemValue));
+    const focusItem: any = data.find(item => shallowEqual(_.get(item, valueKey), focusItemValue));
 
     this.setState({ value }, () => {
       this.handleSelect(value, focusItem, event);
@@ -266,18 +273,18 @@ class Dropdown extends React.Component<Props, States> {
     }
   };
 
-  handleItemSelect = (nextValue: any, checked: boolean, item: Object, event: DefaultEvent) => {
+  handleItemSelect = (nextItemValue: any, checked: boolean, item: Object, event: DefaultEvent) => {
     const value = this.getValue();
 
     if (checked) {
-      value.push(nextValue);
+      value.push(nextItemValue);
     } else {
-      _.remove(value, itemVal => _.isEqual(itemVal, nextValue));
+      _.remove(value, itemVal => shallowEqual(itemVal, nextItemValue));
     }
 
     const nextState = {
       value,
-      focusItemValue: nextValue
+      focusItemValue: nextItemValue
     };
 
     this.setState(nextState, () => {
@@ -286,9 +293,9 @@ class Dropdown extends React.Component<Props, States> {
     });
   };
 
-  handleSelect = (nextValue: any, item: Object, event: DefaultEvent) => {
+  handleSelect = (nextItemValue: any, item: Object, event: DefaultEvent) => {
     const { onSelect } = this.props;
-    onSelect && onSelect(nextValue, item, event);
+    onSelect && onSelect(nextItemValue, item, event);
   };
 
   handleChangeValue = (value: any, event: DefaultEvent) => {
@@ -458,7 +465,7 @@ class Dropdown extends React.Component<Props, States> {
     const value = this.getValue();
     const selectedItems =
       !!value && !!value.length
-        ? data.filter(item => value.some(val => _.eq(item[valueKey], val)))
+        ? data.filter(item => value.some(val => shallowEqual(item[valueKey], val)))
         : [];
     const hasValue = !!selectedItems.length;
 
