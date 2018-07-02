@@ -243,4 +243,15 @@ describe('Dropdown', () => {
 
     assert.equal(instanceDOM.innerText, '');
   });
+
+  it('Sholud output the correct language', () => {
+    const locale = {
+      selectedValues: '已选择 {0} 项'
+    };
+    const instance = ReactTestUtils.renderIntoDocument(
+      <Dropdown locale={locale} data={[{ label: '', value: '1' }]} value={['1']} defaultOpen />
+    );
+    const instanceDOM = findDOMNode(instance).querySelector('.rs-picker-toggle-value');
+    assert.equal(instanceDOM.innerText, '已选择 1 项');
+  });
 });
