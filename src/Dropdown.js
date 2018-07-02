@@ -3,7 +3,6 @@
 import * as React from 'react';
 import classNames from 'classnames';
 import _ from 'lodash';
-import { IntlProvider, FormattedMessage } from 'rsuite-intl';
 import OverlayTrigger from 'rsuite-utils/lib/Overlay/OverlayTrigger';
 import {
   reactToString,
@@ -13,7 +12,8 @@ import {
   prefix,
   createChainedFunction,
   shallowEqual,
-  shallowEqualArray
+  shallowEqualArray,
+  tplTransform
 } from 'rsuite-utils/lib/utils';
 
 import { SearchBar, Toggle, MenuWrapper, constants } from 'rsuite-utils/lib/Picker';
@@ -469,7 +469,9 @@ class Dropdown extends React.Component<Props, States> {
         : [];
     const hasValue = !!selectedItems.length;
 
-    let selectedLabel = hasValue ? `${selectedItems.length} selected` : placeholder;
+    let selectedLabel = hasValue
+      ? tplTransform(locale.selectedValues, selectedItems.length)
+      : placeholder;
     if (renderValue && hasValue) {
       selectedLabel = renderValue(value, selectedItems);
     }
@@ -486,44 +488,42 @@ class Dropdown extends React.Component<Props, States> {
     );
 
     return (
-      <IntlProvider locale={locale}>
-        <div
-          className={classes}
-          style={style}
-          onKeyDown={this.handleKeyDown}
-          tabIndex={-1}
-          role="menu"
-          ref={this.bindContainerRef}
+      <div
+        className={classes}
+        style={style}
+        onKeyDown={this.handleKeyDown}
+        tabIndex={-1}
+        role="menu"
+        ref={this.bindContainerRef}
+      >
+        <OverlayTrigger
+          ref={this.bindTriggerRef}
+          open={open}
+          defaultOpen={defaultOpen}
+          disabled={disabled}
+          trigger="click"
+          placement={placement}
+          onEnter={onEnter}
+          onEntering={onEntering}
+          onEntered={createChainedFunction(this.handleOpen, onEntered)}
+          onExit={onExit}
+          onExiting={onExiting}
+          onExited={createChainedFunction(this.handleExited, onExited)}
+          speaker={this.renderDropdownMenu()}
+          container={container}
+          containerPadding={containerPadding}
         >
-          <OverlayTrigger
-            ref={this.bindTriggerRef}
-            open={open}
-            defaultOpen={defaultOpen}
-            disabled={disabled}
-            trigger="click"
-            placement={placement}
-            onEnter={onEnter}
-            onEntering={onEntering}
-            onEntered={createChainedFunction(this.handleOpen, onEntered)}
-            onExit={onExit}
-            onExiting={onExiting}
-            onExited={createChainedFunction(this.handleExited, onExited)}
-            speaker={this.renderDropdownMenu()}
-            container={container}
-            containerPadding={containerPadding}
+          <Toggle
+            {...unhandled}
+            componentClass={toggleComponentClass}
+            onClean={this.handleClean}
+            cleanable={cleanable && !disabled}
+            hasValue={hasValue}
           >
-            <Toggle
-              {...unhandled}
-              componentClass={toggleComponentClass}
-              onClean={this.handleClean}
-              cleanable={cleanable && !disabled}
-              hasValue={hasValue}
-            >
-              {selectedLabel || <FormattedMessage id="placeholder" />}
-            </Toggle>
-          </OverlayTrigger>
-        </div>
-      </IntlProvider>
+            {selectedLabel || locale.placeholder}
+          </Toggle>
+        </OverlayTrigger>
+      </div>
     );
   }
 }

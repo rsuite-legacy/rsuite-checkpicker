@@ -1,4 +1,5 @@
 export default {
   placeholder: 'Select',
-  searchPlaceholder: 'Search'
+  searchPlaceholder: 'Search',
+  selectedValues: '{0} selected'
 };
