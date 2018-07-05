@@ -1,3 +1,7 @@
+# 3.0.6
+
+- **Chore**: The selected value is displayed in Chinese
+
 # 3.0.5
 
 - **Chore**: Change the `depth equal` to the `shallow equal`
