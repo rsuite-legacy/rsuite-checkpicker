@@ -32,6 +32,7 @@ const propTypes = {
   value: PropTypes.array,
   defaultValue: PropTypes.array,
   renderPlaceholder: PropTypes.func,
+  renderMenu: PropTypes.func,
   placeholder: PropTypes.string,
   onChange: PropTypes.func,
   locale: PropTypes.object,
@@ -354,7 +355,8 @@ class Dropdown extends React.Component {
       labelKey,
       groupBy,
       searchable,
-      renderExtraFooter
+      renderExtraFooter,
+      renderMenu
     } = this.props;
 
     const { focusItemValue, dropup } = this.state;
@@ -374,7 +376,7 @@ class Dropdown extends React.Component {
     const menuProps = _.pick(this.props, Object.keys(DropdownMenu.propTypes));
 
 
-    const dropdownMenu = (
+    let dropdownMenu = (
       <DropdownMenu
         {...menuProps}
         ref={(ref) => {
@@ -388,6 +390,10 @@ class Dropdown extends React.Component {
         onSelect={this.handleSelect}
       />
     );
+
+    if (renderMenu) {
+      dropdownMenu = renderMenu(dropdownMenu);
+    }
 
     const searchBar = searchable ? (
       <SearchBar
