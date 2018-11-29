@@ -153,7 +153,10 @@ class Dropdown extends React.Component {
    */
   handleDocumentClick = (event) => {
     if (this.isMounted && !this.container.contains(event.target)) {
-      this.setState({ expand: false });
+      this.setState({
+        expand: false,
+        searchKeyword: '',
+      });
     }
   }
 
@@ -291,6 +294,7 @@ class Dropdown extends React.Component {
     const value = this.getValue();
     this.setState({
       expand: false,
+      searchKeyword: '',
       focusItemValue: value ? value[0] : undefined
     });
   }
@@ -309,7 +313,10 @@ class Dropdown extends React.Component {
   }
 
   close() {
-    this.setState({ expand: false });
+    this.setState({
+      expand: false,
+      searchKeyword: '',
+    });
   }
 
   open() {
